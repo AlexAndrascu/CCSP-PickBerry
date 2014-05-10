@@ -3,7 +3,7 @@ module.exports.adapters = {
 
   mongo: {
     module: 'sails-mongo',
-    url: "mongodb://@fucknews.herokuapp.com:27017/db",
+    url: process.env.DB_URL,
     schema: true
   }
 };
