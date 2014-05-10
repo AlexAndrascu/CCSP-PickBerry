@@ -16,13 +16,6 @@
  */
 
 module.exports = {
-    index: function(req,res){
-    },
-    // show: function(req,res){
-    // 	console.log(req.params[id])
-    // },
-
-
 
   /**
    * Overrides for the settings in `config/controllers.js`
