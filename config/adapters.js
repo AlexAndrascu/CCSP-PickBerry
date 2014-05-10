@@ -3,10 +3,8 @@ module.exports.adapters = {
 
   mongo: {
     module: 'sails-mongo',
-    host: 'localhost',
-    port: 27017,
-    user: '',
-    password: '',
-    database: 'test'
+    url: "mongodb://@fucknews.herokuapp.com:27017/db",
+    schema: true
   }
 };
+
