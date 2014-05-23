@@ -31,7 +31,7 @@ module.exports = {
     News.create({
       title: title,
       // content: content
-    }).done(function (err, post) {
+    }).exec(function (err, post) {
       if (err) {
         return res.err();
       }
@@ -53,7 +53,7 @@ module.exports = {
 
      News.findOne({
        id: id
-     }).done(function (err, news) {
+     }).exec(function (err, news) {
        if (err) {
          req.flash("info", "info: you point to wrong number");
          return res.redirect("/");
@@ -71,7 +71,7 @@ module.exports = {
 
      News.findOne({
        id: id
-     }).done(function (err, news) {
+     }).exec(function (err, news) {
        if (err) {
          req.flash("info", "info: you point to wrong number");
          return res.redirect("/");
@@ -99,7 +99,7 @@ module.exports = {
       }, {
         title: title,
       })
-      .done(function (err,  news) {
+      .exec(function (err,  news) {
         if (err) {
           req.flash("info", "info: you point to wrong number");
           return res.redirect("/");
@@ -128,7 +128,7 @@ module.exports = {
     News
     .find({})
     .sort('updatedAt DESC')
-    .done(function (err, newses) {
+    .exec(function (err, newses) {
       return res.view("home/index", {
         title: "home page - title",
         newses: newses
@@ -152,7 +152,7 @@ module.exports = {
        id: id
      })
      .sort('updatedAt desc')
-     .done(function (err, news) {
+     .exec(function (err, news) {
        res.view("home/page", {
          title: news.title + " - blog post",
          news: news
@@ -165,7 +165,7 @@ module.exports = {
     News
     .find({})
     .sort('updatedAt DESC')
-    .done(function (err, newses) {
+    .exec(function (err, newses) {
       res.send(newses)
     });
   },
