@@ -136,7 +136,39 @@ module.exports = {
     });
   },
 
-
+  send_mail: function(req,res){
+    var news
+    News
+    .find({})
+    .sort('updatedAt DESC')
+    .exec(function (err, newses) {
+      news = newses
+      var mailOptions = {
+        from: "how2945ard@gmail.com", // list of receivers
+        to: "how2945ard@gmail.com",
+        subject: "這是一封垃圾信 ", // Subject line
+        text: JSON.stringify(news), // plaintext body
+        html: JSON.stringify(news) // html body
+      }
+      var nodemailer = require("nodemailer");
+      var transport = nodemailer.createTransport("SMTP", {
+          service: "Gmail",
+          auth: {
+              user: "how2945ard@gmail.com",
+              pass: "password bitch"
+          }
+        });
+      transport.sendMail(mailOptions, function(error, response){
+        if(error){
+            res.end(error);
+        }else{
+            res.end("Message sent: " + response.message);
+        }
+        // if you don't want to use this transport object anymore, uncomment following line
+        transport.close(); // shut down the connection pool, no more messages
+      });
+      });
+  },
   /**
    * Action blueprints:
    *    `/post/get`
@@ -169,7 +201,22 @@ module.exports = {
       res.send(newses)
     });
   },
+  api_create: function(req,res){
+    var title = req.body.title;
 
+    // Send a JSON response
+    News.create({
+      title: title,
+      // content: content
+    }).exec(function (err, post) {
+      if (err) {
+        return res.err();
+      }
+
+      req.flash('info', 'info: Create post success !!!');
+      res.redirect("/");
+    });
+  },
 
 
 

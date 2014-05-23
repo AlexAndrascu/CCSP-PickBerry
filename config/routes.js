@@ -71,7 +71,12 @@ module.exports.routes = {
   "GET /news/api_get" :{
     controller: "news",
     action: "api_get"
+  },
+  "GET /news/send_mail":{
+    controller: "news",
+    action: "send_mail"
   }
+
 
   /*
   // But what if you want your home page to display
