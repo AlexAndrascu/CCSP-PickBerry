@@ -159,7 +159,15 @@ module.exports = {
        });
      });
     // Send a JSON response
+  },
 
+  api_get: function(req,res) {
+    News
+    .find({})
+    .sort('updatedAt DESC')
+    .done(function (err, newses) {
+      res.send(newses)
+    });
   },
 
 

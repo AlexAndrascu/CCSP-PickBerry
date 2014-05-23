@@ -62,12 +62,16 @@ module.exports.routes = {
     action: "update"
   },
 
-  "POSt /news/destroy/:id":{
+  "POST /news/destroy/:id":{
     controller: "news",
     action: "destroy"
   },
 
   "GET /:controller/:action/:id?": {},
+  "GET /news/api_get" :{
+    controller: "news",
+    action: "api_get"
+  }
 
   /*
   // But what if you want your home page to display
