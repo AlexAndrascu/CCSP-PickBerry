@@ -1,26 +1,6 @@
-<div class="container">
-  <header>
-    <h1>this is header</h1>
-  </header>
-  <hr/>
-  <nav>
-    <ul>
-      <li><a href="/">home</a></li>
-      <li><a href="/news/create">create</a></li>
-    </ul>
-  </nav>
-  <% if (info = req.flash("info")) { %>
-  <div>
-    <%= info %>
-  </div>
-  <% } %>
-  <% newses.forEach(function(news, index) { %>
-  <article>
-    <h2><%= news.title %></h2>
-    <div class="link">
-      <a href="/news/get/<%=news.id%>">link to <%=news.title%></a>
-    </div>
-  </article>
-  <hr>
-  <% }); %>
+<div ng-app="fucknews" class="container" ng-controller="mainCtrl">
+  <form ng-submit="submit()">
+    <input type="text" placeholder="I want to report this news" ng-model="report.url" value="">
+    <button ng-click="report">submit</button>
+  </form>
 </div>
