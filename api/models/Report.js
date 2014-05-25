@@ -7,15 +7,15 @@
 
 
 module.exports = {
-
+  // schema : true,
   attributes: {
   	content:'string', //檢舉信件內容
-  	
+
   	rep_news:{    //檢舉的新聞
   		model: 'news'
   	},
 
-  	
+
   	sent:'bool',	//是否寄出
 
 

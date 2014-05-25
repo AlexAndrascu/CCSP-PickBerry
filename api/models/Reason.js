@@ -6,7 +6,7 @@
 */
 
 module.exports = {
-
+  // schema : true,
   attributes: {
   	content:'string',
   	vote: 'integer',
@@ -15,14 +15,15 @@ module.exports = {
   		model:'user'
   	},
 
-  	parentnews:{             //原始的新聞
+  	parent_news:{             //原始的新聞
   		model:'news'
   	},
 
   	voters:{                  //投票者
   		collection: 'user',
-  		via: 'reasonsuser',
-  		through: 'reasonvoter'
+  		via: 'reasons_user',
+  		// through: 'reason_voter'
+      dominant: true
   	}
 
   }

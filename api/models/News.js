@@ -7,6 +7,7 @@
  */
 
 module.exports = {
+  // schema : true,
   attributes: {
 
   	/* e.g.
@@ -20,7 +21,7 @@ module.exports = {
 
   	reasons:{      //檢舉理由
   		collection: 'reason',
-      via: 'parentnews'
+      via: 'parent_news'
   	},
 
     comments:{        //評論
@@ -32,6 +33,6 @@ module.exports = {
       model: 'company'
     }
 
-   
+
   }
 };

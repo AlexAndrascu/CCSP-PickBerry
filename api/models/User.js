@@ -6,16 +6,16 @@
 */
 
 module.exports = {
-
+  // schema : true,
   attributes: {
 
-    name: 'string'
+    name: 'string',
   	education: 'string',
   	email: 'string',
   	job:'string',
   	sex:'string',
   	friends: 'string',
-  	
+
   	reports:{
   		collection: 'report',
   		via: 'owner'
@@ -25,16 +25,16 @@ module.exports = {
   		collection: 'comment',
   		via: 'owner'
   	},
-  	
-  	reasonsmaker:{
+
+  	reasons_maker:{
   		collection: 'reason',
   		via:'owner'
   	},
 
-  	reasonsuser:{
+  	reasons_user:{
   		collection: 'reason',
   		via:'voters',
-  		through:'reasonvoter'
+  		// through:'reason_voter'
   	}
 
   }

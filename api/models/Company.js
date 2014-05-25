@@ -6,14 +6,14 @@
 */
 
 module.exports = {
-
+  // schema : true,
   attributes: {
   	domain: 'string',
   	name: 'string',
   	money: 'string', //金主
   	relation: 'string',  //關聯
 
-  	newss: {		//一個企業有很多新聞
+  	news_pool: {		//一個企業有很多新聞
   		collection:'news',
   		via:'parent_domain'
   	}

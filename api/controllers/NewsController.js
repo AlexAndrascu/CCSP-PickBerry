@@ -137,13 +137,7 @@ module.exports = {
   },
 
   send_mail: function(req,res){
-    var news
-    News
-    .find({})
-    .sort('updatedAt DESC')
-    .exec(function (err, newses) {
-      news = newses
-      var mailOptions = {
+    var mailOptions = {
         from: "how2945ard@gmail.com", // list of receivers
         to: "how2945ard@gmail.com",
         subject: "這是一封垃圾信 ", // Subject line
@@ -166,7 +160,6 @@ module.exports = {
         }
         // if you don't want to use this transport object anymore, uncomment following line
         transport.close(); // shut down the connection pool, no more messages
-      });
       });
   },
   /**

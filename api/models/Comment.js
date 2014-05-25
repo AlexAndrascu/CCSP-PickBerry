@@ -6,16 +6,16 @@
 */
 
 module.exports = {
+	// schema : true,
+	attributes: {
+		content: 'string',
+		com_news:{
+			model:'news'
+		},  //評論的新聞
 
-  attributes: {
-  	content: 'string',
-  	com_news:{
-  		model:'news'
-  	},  //評論的新聞
-
-  	owner:{
-  		model: 'user'
-  	}
-  }
+		owner:{
+			model: 'user'
+		}
+	}
 };
 

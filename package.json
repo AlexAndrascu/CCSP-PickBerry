@@ -10,7 +10,6 @@
     "optimist": "0.3.4",
     "sails-mongo": "^0.10.0-rc5",
     "request": "^2.34.0",
-    "sails-mysql": "^0.10.0-rc7",
     "nodemailer": "^0.6.5"
   },
   "scripts": {
@@ -18,7 +17,14 @@
     "debug": "node debug app.js"
   },
   "main": "app.js",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/how2945ard/CCSP-fucknews.git"
+  },
   "author": "",
-  "license": ""
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/how2945ard/CCSP-fucknews/issues"
+  },
+  "homepage": "https://github.com/how2945ard/CCSP-fucknews"
 }
