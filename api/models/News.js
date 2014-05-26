@@ -19,6 +19,11 @@ module.exports = {
     url:'string', //連結網址
     hot:'integer',//熱門程度 點閱率
 
+    reports:{
+      collection: 'report',
+      via: 'rep_news'
+    },
+
   	reasons:{      //檢舉理由
   		collection: 'reason',
       via: 'parent_news'

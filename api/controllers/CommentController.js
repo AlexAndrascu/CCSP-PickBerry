@@ -6,6 +6,14 @@
  */
 
 module.exports = {
-	
+	// commentOfUser: function(req,res){
+	// 	var id = req.param('id')
+	// 	User.findOne({
+	// 		id: id
+	// 	}).exec(function (err,user){
+	// 		console.log(user)
+	// 		res.json(user)
+	// 	})
+	// }
 };
 

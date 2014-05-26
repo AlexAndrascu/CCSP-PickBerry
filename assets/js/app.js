@@ -60,60 +60,50 @@
       console.log.apply(console, arguments);
     }
   }
-  angular.module("fucknews", [])
-  .controller("mainCtrl", function($scope) {
-    console.log("angularjs loaded")
+  var app = angular.module("fucknews", ['ngRoute'])
+  console.log("Angularjs loaded")
 
+  app.controller("homepage", function($scope) {
+    console.log('Homepage controller loaded')
 
-    $scope.reportUrl = {};
-    $scope.submit = function() {
-        $scope.$broadcast('event:force-model-update');
-        socket.post('/report/'+$scope.report.url),{},function(data){
+    $scope.report = {};
+    $scope.submitReport = function() {
+        console.log('/report/create?content='+$scope.report.url)
+        socket.post('/report/create?content='+$scope.report.url),{},function(data){
           console.log(data)
         }
     }
 
+    $scope.reason = {};
+    $scope.submitReason = function() {
+        console.log('/reason/create?content='+$scope.reason.url)
+        socket.post('/reason/create?content='+$scope.reason.url),{},function(data){
+          console.log(data)
+        }
+    }
+
+
     socket.on('message', function messageReceived(message) {
       console.log(message)
-      if(message.verb== "create"){
-        $scope.lists.push(message.data);
+
+      if(message.verb=== "create"&&message.model==="report"){
+        $scope.reports.push(message.data);
         $scope.$apply();
       }
-      if(message.verb== "destroy"){
-        $scope.lists.forEach(function(list,idx){
-          if(list.id==message.id){
-            $scope.lists.splice(idx,1);
+      if(message.verb=== "destroy"&&message.model==="report"){
+        $scope.reports.forEach(function(report,idx){
+          if(report.id==message.id){
+            $scope.reports.splice(idx,1);
             $scope.$apply();
           }
         })
       }
     });
 
-    // socket.get("/list", function (lists){
-
-    //   console.log(lists);
-
-    //   $scope.lists = lists;
-
-    //  $scope.$apply(); // tell the controller that angular function has callback
-
-    //  // because socket isn't a included library in angular in this project
-
-    // });
-    // $scope.create = function(){
-    //   socket.post('/list',{},function(data){
-    //     console.log(data)
-    //     $scope.lists.push(data)
-    //     $scope.$apply()
-    //   })
-    // }
-    // $scope.delete = function($index){
-    //   socket.delete('/list/'+$scope.lists[$index].id,function(data){
-    //     console.log(data)
-    //     $scope.lists.splice($index,1)
-    //     $scope.$apply()
-    //   } )
-    // }
+    socket.get('/news',function(newses){
+      $scope.newses = newses
+      $scope.$apply()
+    })
   }).directive('forceModelUpdate', function($compile) {
     return {
         restrict: 'A',
@@ -125,7 +115,95 @@
         }
     }
   });
+
+  app.controller("news", function($scope,$location) {
+
+    socket.on('message', function messageReceived(message) {
+      console.log(message)
+      if(message.verb=== "create"){
+        switch (message.model){
+          case "report":
+            $scope.news.reports.push(message.data);
+            $scope.$apply();
+            break;
+          case "reason":
+            $scope.news.reasons.push(message.data);
+            $scope.$apply();
+            break;
+          }
+      }
+      else if(message.verb=== "destroy"){
+        switch (message.model){
+          case "report":
+            $scope.reports.forEach(function(report,idx){
+              if(report.id==message.id){
+                $scope.news.reports.splice(idx,1);
+                $scope.$apply();
+              }
+            })
+            break;
+          case "reason":
+            $scope.reasons.forEach(function(reason,idx){
+              if(reason.id==message.id){
+                $scope.news.reasons.splice(idx,1);
+                $scope.$apply();
+              }
+            })
+            break;
+          }
+      }
+    });
+
+    var new_id = $location.absUrl().split('/').pop()
+
+    console.log('News controller loaded')
+    socket.get('/news/'+new_id,function(news){
+      $scope.news = news
+      $scope.$apply()
+    })
+
+    $scope.report = {};
+    $scope.submitReport = function() {
+        socket.get('/report/create?rep_news='+new_id+'&content='+$scope.report.content,function(data){
+          $scope.news.reports.push(data);
+          $scope.$apply();
+        })
+    }
+
+    $scope.reason = {};
+    $scope.submitReason = function() {
+      socket.get('/reason/create?parent_news='+new_id+'&content='+$scope.reason.content,function(data){
+        $scope.news.reasons.push(data);
+        $scope.$apply();
+      })
+    }
+  })
+
+  app.controller("user", function($scope,$location) {
+    console.log('user controller loaded')
+  })
+
+  app.controller("userComments", function($scope,$location) {
+    console.log('userComments controller loaded')
+    var user_id = $location.absUrl().split('/').pop()
+    socket.get('/user/'+user_id,function(data){
+        console.log(data)
+        $scope.comments = data.comments
+        $scope.$apply()
+    })
+  })
+
+  app.controller("userReports", function($scope,$location) {
+    console.log('userReports controller loaded')
+    var user_id = $location.absUrl().split('/').pop()
+    socket.get('/user/'+user_id,function(data){
+        console.log(data)
+        $scope.reports = data.reports
+        $scope.$apply()
+    })
+  })
 })
+
 (
 
   // In case you're wrapping socket.io to prevent pollution of the global namespace,

@@ -1,6 +1,14 @@
-<div ng-app="fucknews" class="container" ng-controller="mainCtrl">
-  <form ng-submit="submit()">
-    <input type="text" placeholder="I want to report this news" ng-model="report.url" value="">
-    <button ng-click="report">submit</button>
+<div ng-app="fucknews" class="container" ng-controller="homepage">
+  <form>
+    <input ng-model="report.url" type="text" placeholder="I want to report this news" value="">
+    <button ng-click="submitReport()">submit</button>
   </form>
+  <form>
+    <input ng-model="reason.url" type="text" placeholder="I want to report this news" value="">
+    <button ng-click="submitReason()">submit</button>
+  </form>
+
+  <ul>
+    <li ng-repeat="news in newses"><a href="/news/{{ news.id }}">{{ news }}</a></li>
+  </ul>
 </div>

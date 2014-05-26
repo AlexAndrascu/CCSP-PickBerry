@@ -33,49 +33,39 @@ module.exports.routes = {
   //
   // (This would also work if you had a file at: `/views/home.ejs`)
   '/': {
-    controller: "news",
-    action: "list"
+    controller: "home",
+    action: "index"
   },
-
-
-  'GET /news': {
+  '/news/show/:id':{
     controller: "news",
-    action: "list"
+    action: 'show'
   },
+  '/user/show/:id':{
+    controller: "user",
+    action: 'show'
+  },
+  '/comments/show/user/:id':{
+    controller: "user",
+    action: 'getAllComments'
+  },
+  '/reports/show/user/:id':{
+    controller: "user",
+    action: 'getAllReports'
+  },
+  // '/comments/api/user/:id':{
+  //   controller: "comment",
+  //   action: 'commentOfUser'
+  // },
+  "GET /:controller/:action/:id?": {}
 
-  "GET /news/create": {
-    view: "home/create"
-  },
-
-  "POST /news": {
-    controller: "news",
-    action: "create"
-  },
-
-  "GET /news/update/:id": {
-    controller: "news",
-    action: "updatePage"
-  },
-
-  "PUT /news/:id": {
-    controller: "news",
-    action: "update"
-  },
-
-  "POST /news/destroy/:id":{
-    controller: "news",
-    action: "destroy"
-  },
-
-  "GET /:controller/:action/:id?": {},
-  "GET /news/api_get" :{
-    controller: "news",
-    action: "api_get"
-  },
-  "GET /news/send_mail":{
-    controller: "news",
-    action: "send_mail"
-  }
+  // "GET /news/api_get" :{
+  //   controller: "news",
+  //   action: "api_get"
+  // },
+  // "GET /news/send_mail":{
+  //   controller: "news",
+  //   action: "send_mail"
+  // }
 
 
   /*

@@ -1,0 +1,8 @@
+<div ng-app="fucknews" class="container" ng-controller="userReports">
+  	<p><%= name %></p>
+	<div ng-repeat="report in reports">
+		<div>{{ report.content }}</div>
+		<div>{{ report.rep_news }}</div>
+		<!-- <div>{{ report.owner }}</div> -->
+	</div>
+</div>

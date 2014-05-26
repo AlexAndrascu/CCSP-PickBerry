@@ -1,0 +1,19 @@
+<div ng-app="fucknews" class="container" ng-controller="news">
+  <ul>
+    <li ng-repeat="comment in news.comments">{{comment}}</li>
+  </ul>
+  <ul>
+    <li ng-repeat="reason in news.reasons">{{reason}}</li>
+  </ul>
+  <ul>
+    <li ng-repeat="report in news.reports">{{report}}</li>
+  </ul>
+  <form>
+    <input ng-model="report.content" type="text" placeholder="I want to report this news" value="">
+    <button ng-click="submitReport()">submit</button>
+  </form>
+  <form>
+    <input ng-model="reason.content" type="text" placeholder="I want to reason this news" value="">
+    <button ng-click="submitReason()">submit</button>
+  </form>
+</div>
