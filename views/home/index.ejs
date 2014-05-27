@@ -7,7 +7,11 @@
     <input ng-model="reason.url" type="text" placeholder="I want to report this news" value="">
     <button ng-click="submitReason()">submit</button>
   </form>
-
+  <a href="/logout">logout</a>
+  <ul>
+    <li><%= user_name %></li>
+    <li><%= user_id %></li>
+  </ul>
   <ul>
     <li ng-repeat="news in newses"><a href="/news/{{ news.id }}">{{ news }}</a></li>
   </ul>
