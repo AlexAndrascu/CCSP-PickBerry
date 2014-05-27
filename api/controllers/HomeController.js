@@ -11,7 +11,8 @@ FB.options({
 module.exports = {
 	index: function(req,res){
 		var accessToken = req.session.access_token;
-		 console.log(req.session.access_token);
+		var session_id = req.session.fbid;
+		 
 
 
 		if(!accessToken){
@@ -19,23 +20,46 @@ module.exports = {
 	           res.render("home/login", {
 	            title: "login page",
 	            
-	            loginUrl: FB.getLoginUrl({ scope: 'public_profile' })
+	            loginUrl: FB.getLoginUrl({ scope: 'public_profile,user_photos' }),
+	            
 	          });
 	      }
 	      else{
-	      		var user_name, user_id;
+	      		
 	      		FB.setAccessToken(accessToken);
-	            FB.api('/me',{field:['id','name']}, function (response) {
+	            FB.api('/me',{field:['id','name','photos']}, function (response) {
 				  if(!response || response.error) {
 				    console.log(!response ? 'error occurred' : response.error);
 				    return;
 				  }
-				  
+
+				
+
+				User.findOne()
+					.where({fbid: response.id})
+					.where({name: response.name})
+					.exec(function(err,users){
+						if(err) throw err;
+						if(!users){
+							console.log('Find nothing...');
+							User.create({fbid: response.id, name: response.name})
+								.exec(function(err,user){
+									console.log("Create user: "+user.name);
+								});
+						}
+						else{
+							console.log("Get user:" +users.name);
+
+						}
+					})
+				
+				
 
 				res.render("home/index",{
 		            title: "News",
 		            user_name: response.name,
-		            user_id: response.id
+		            user_id: response.id,
+		            user_photo: response.photos
 	            
 	          	});
 			});
@@ -66,7 +90,7 @@ module.exports = {
 	                redirect_uri:   FB.options('redirectUri'),
 	                code:           code
 	            }, this);
-	            console.log("CODE: "+code);
+	            
 	        },
 	        function extendAccessToken(err, result) {
 	            if(err) throw(err);
@@ -76,8 +100,7 @@ module.exports = {
 	                grant_type:         'fb_exchange_token',
 	                fb_exchange_token:  result.access_token
 	            }, this);
-	            console.log("TOKEN: "+result.access_token);
-	        },
+	            	        },
 	        //set session
 	        function (err, result) {
 	            if(err) return next(err);
@@ -95,15 +118,5 @@ module.exports = {
 
     },
 
-    logout: function(req, res){
-    	console.log('fuck!');
-	    req.session = null; 
-
-	    console.log(req.session.access_token);// clear session
-
-
-	   	res.redirect('/');
-
-
-    }
+    
 };

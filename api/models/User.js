@@ -8,14 +8,11 @@
 module.exports = {
   // schema : true,
   attributes: {
-
+    fbid: 'string',
     name: 'string',
-  	education: 'string',
   	email: 'string',
-  	job:'string',
-  	sex:'string',
-  	friends: 'string',
-
+  	
+  	
   	reports:{
   		collection: 'report',
   		via: 'owner'
