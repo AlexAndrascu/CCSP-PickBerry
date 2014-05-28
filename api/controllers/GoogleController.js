@@ -17,7 +17,7 @@ module.exports = {
 		var db=[],news,newsid=1;
 		//var incomingurl = '', 測試用
 		var incomingurl = req.body.Uri,
-			title,content,pic, media = "nothing";
+			title,content,pic,exist, media = "nothing";
 
 
 		switch(req.body.Uri.split('/')[2]) {
@@ -38,12 +38,10 @@ module.exports = {
 
 		if(media != "nothing"){
 			console.log("media: " + media);
-			request(incomingurl, function (err, res, html) {
-				console.log(err);
+			request(incomingurl, function (err, resb, html) {
 
-
-				if (!err && res.statusCode == 200) {
-					console.log("i come in!");
+				if (!err && resb.statusCode == 200) {
+					console.log("Load the page successfully!");
 					var $ = cheerio.load(html);
 					switch(media){					
 						case "apple":
@@ -67,11 +65,37 @@ module.exports = {
 						break;
 
 						default:
-						console.log("NONE");
+						console.log("Scrap nothing!");
 						
 					};
 
-					console.log("TITLE: " + title);
+					News.find()
+						.where({title: title})
+						.where({media: media})
+						.exec(function(err, users){
+							if(users.length == 0){
+								exist = 0;
+							}
+							else{
+								exist = 1;
+							}
+
+
+							res.send({
+							newsTitle: title,
+							newsContent: content,
+							newsPic: pic,
+							newsExist: exist,
+							newsUrl: incomingurl,
+							
+						});
+
+
+					
+
+					
+						
+					});
 				}
 			})
 

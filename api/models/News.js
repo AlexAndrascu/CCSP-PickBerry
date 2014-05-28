@@ -17,6 +17,7 @@ module.exports = {
   	content: 'string',//內容
     imgurl: 'string',//圖片
     url:'string', //連結網址
+    media:'string',//哪家公司的
     hot:'integer',//熱門程度 點閱率
 
     reports:{
