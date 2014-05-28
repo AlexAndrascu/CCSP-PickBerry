@@ -49,6 +49,10 @@ module.exports = {
 							});
 					}
 					else{
+						user.name =  response.name
+						user.sex =response.gender
+						user.email = response.email
+						user.save()
 						console.log("Get user:" +user.name);
 						req.session.user = user.id
 						req.session.save()
