@@ -87,6 +87,7 @@
     }
 
 
+
     socket.on('message', function messageReceived(message) {
       console.log(message)
 
@@ -178,6 +179,14 @@
           $scope.news.reports.push(data);
           $scope.$apply();
         })
+    }
+
+    $scope.comment = {}
+    $scope.submitComment = function(){
+      socket.get('/comment/create?content='+$scope.comment.content+'&com_news='+new_id+'&owner='+current_user,function(data){
+        $scope.news.comments.push(data)
+        $scope.$apply()
+      })
     }
 
     $scope.reason = {};
