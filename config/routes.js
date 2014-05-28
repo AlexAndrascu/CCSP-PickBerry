@@ -37,6 +37,7 @@ module.exports.routes = {
     action: "index"
   },
 
+
   '/fblogin': {
     controller: "home",
     action: "fblogin"
@@ -69,6 +70,17 @@ module.exports.routes = {
     controller: "user",
     action: 'getCurrentUser'
   },
+
+
+  ////這邊是 GOOGLE EXTENSION的PART
+
+  'post /google/uri':{
+    controller: 'google',
+    action: 'getUri'
+  },
+
+
+
   // '/comments/api/user/:id':{
   //   controller: "comment",
   //   action: 'commentOfUser'
