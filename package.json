@@ -11,7 +11,9 @@
     "sails-mongo": "^0.10.0-rc5",
     "request": "^2.34.0",
     "nodemailer": "^0.6.5",
-    "angularjs": "0.0.1"
+    "angularjs": "0.0.1",
+    "fb": "^0.7.0",
+    "step": "0.0.5"
   },
   "scripts": {
     "start": "node app.js",
@@ -27,5 +29,6 @@
   "bugs": {
     "url": "https://github.com/how2945ard/CCSP-fucknews/issues"
   },
-  "homepage": "https://github.com/how2945ard/CCSP-fucknews"
+  "homepage": "https://github.com/how2945ard/CCSP-fucknews",
+  "devDependencies": {}
 }

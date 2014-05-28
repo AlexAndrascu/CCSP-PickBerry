@@ -36,6 +36,15 @@ module.exports.routes = {
     controller: "home",
     action: "index"
   },
+
+  '/fblogin': {
+    controller: "home",
+    action: "fblogin"
+  },
+  'post /logout':{
+    controller: 'home',
+    action: 'fblogout'
+  },
   '/news/show/:id':{
     controller: "news",
     action: 'show'

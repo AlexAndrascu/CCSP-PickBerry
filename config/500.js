@@ -1,7 +1,7 @@
 /**
  * Default 500 (Server Error) middleware
  *
- * If an error is thrown in a policy or controller, 
+ * If an error is thrown in a policy or controller,
  * Sails will respond using this default error handler
  *
  * This middleware can also be invoked manually from a controller or policy:
@@ -13,7 +13,6 @@
  */
 
 module.exports[500] = function serverErrorOccurred(errors, req, res) {
-
   /*
    * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
    * work just like their Express equivalents to handle HTTP requests, they also simulate
@@ -28,7 +27,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res) {
     status: statusCode
   };
 
-  // Normalize a {String|Object|Error} or array of {String|Object|Error} 
+  // Normalize a {String|Object|Error} or array of {String|Object|Error}
   // into an array of proper, readable {Error}
   var errorsToDisplay = sails.util.normalizeErrors(errors);
   for (i in errorsToDisplay) {
@@ -69,7 +68,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res) {
   res.render(viewFilePath, result, function (err) {
     // If the view doesn't exist, or an error occured, just send JSON
     if (err) { return res.json(result, result.status); }
-    
+
     // Otherwise, if it can be rendered, the `views/500.*` page is rendered
     res.render(viewFilePath, result);
   });
