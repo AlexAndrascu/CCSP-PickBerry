@@ -9,7 +9,6 @@
 
 
 (function (io) {
-
   // as soon as this file is loaded, connect automatically,
   var socket = io.connect();
   if (typeof console !== 'undefined') {
@@ -60,24 +59,29 @@
       console.log.apply(console, arguments);
     }
   }
-  var app = angular.module("fucknews", ['ngRoute'])
+  var app = angular.module("fucknews", [])
   console.log("Angularjs loaded")
 
   app.controller("homepage", function($scope) {
     console.log('Homepage controller loaded')
 
+    var current_user
+    socket.get('/getCurrentUser',function(data){
+      current_user = data
+    })
+
     $scope.report = {};
     $scope.submitReport = function() {
-        console.log('/report/create?content='+$scope.report.url)
-        socket.post('/report/create?content='+$scope.report.url),{},function(data){
+        console.log('/report/create?content='+$scope.report.url+'&owner='+current_user)
+        socket.post('/report/create?content='+$scope.report.url+'&owner='+current_user),{},function(data){
           console.log(data)
         }
     }
 
     $scope.reason = {};
     $scope.submitReason = function() {
-        console.log('/reason/create?content='+$scope.reason.url)
-        socket.post('/reason/create?content='+$scope.reason.url),{},function(data){
+        console.log('/reason/create?content='+$scope.reason.url+'&owner='+current_user)
+        socket.post('/reason/create?content='+$scope.reason.url+'&owner='+current_user),{},function(data){
           console.log(data)
         }
     }
@@ -117,6 +121,12 @@
   });
 
   app.controller("news", function($scope,$location) {
+
+    var current_user
+    socket.get('/getCurrentUser',function(data){
+      current_user = data
+      console.log(data)
+    })
 
     socket.on('message', function messageReceived(message) {
       console.log(message)
@@ -164,7 +174,7 @@
 
     $scope.report = {};
     $scope.submitReport = function() {
-        socket.get('/report/create?rep_news='+new_id+'&content='+$scope.report.content,function(data){
+        socket.get('/report/create?rep_news='+new_id+'&content='+$scope.report.content+'&owner='+current_user,function(data){
           $scope.news.reports.push(data);
           $scope.$apply();
         })
@@ -172,7 +182,7 @@
 
     $scope.reason = {};
     $scope.submitReason = function() {
-      socket.get('/reason/create?parent_news='+new_id+'&content='+$scope.reason.content,function(data){
+      socket.get('/reason/create?parent_news='+new_id+'&content='+$scope.reason.content+'&owner='+current_user,function(data){
         $scope.news.reasons.push(data);
         $scope.$apply();
       })
@@ -180,10 +190,21 @@
   })
 
   app.controller("user", function($scope,$location) {
+    var current_user
+    socket.get('/getCurrentUser',function(data){
+      current_user = data
+    })
+
     console.log('user controller loaded')
   })
 
   app.controller("userComments", function($scope,$location) {
+
+    var current_user
+    socket.get('/getCurrentUser',function(data){
+      current_user = data
+    })
+
     console.log('userComments controller loaded')
     var user_id = $location.absUrl().split('/').pop()
     socket.get('/user/'+user_id,function(data){
@@ -193,7 +214,30 @@
     })
   })
 
+
+  app.controller("userReasons", function($scope,$location) {
+
+    var current_user
+    socket.get('/getCurrentUser',function(data){
+      current_user = data
+    })
+
+    console.log('userReasons controller loaded')
+    var user_id = $location.absUrl().split('/').pop()
+    socket.get('/user/'+user_id,function(data){
+        console.log(data)
+        $scope.reasons = data.reasons_maker
+        $scope.$apply()
+    })
+  })
+
   app.controller("userReports", function($scope,$location) {
+
+    var current_user
+    socket.get('/getCurrentUser',function(data){
+      current_user = data
+    })
+
     console.log('userReports controller loaded')
     var user_id = $location.absUrl().split('/').pop()
     socket.get('/user/'+user_id,function(data){

@@ -1,6 +1,7 @@
 var FB = require('fb');
 var Step = require('step');
 var config = require('../../config/local');
+var passport = require('passport')
 
 FB.options({
     appId:          config.facebook.appId,
@@ -12,72 +13,59 @@ module.exports = {
 	index: function(req,res){
 		var accessToken = req.session.access_token;
 		var session_id = req.session.fbid;
-
-
-
 		if(!accessToken){
 	      		console.log('accesstoken is null');
 	           res.render("home/login", {
 	            title: "login page",
-
-	            loginUrl: FB.getLoginUrl({ scope: 'public_profile,user_photos' }),
-
+	            loginUrl: FB.getLoginUrl({ scope: 'public_profile,user_photos,email'}),
 	          });
-	      }
-	      else{
+	    }
+	    else{
+      		FB.setAccessToken(accessToken);
+            FB.api('/me',{field:['id','name','photos','gender','email']}, function (response) {
+			  if(!response || response.error) {
+			    console.log(!response ? 'error occurred' : response.error);
+			    return;
+			  }
+			 console.log(response)
+			User.findOne()
+				.where({fbid: response.id})
+				.where({name: response.name})
+				.exec(function(err,user){
+					if(err) throw err;
+					if(!user){
+						console.log('Find nothing...');
 
-	      		FB.setAccessToken(accessToken);
-	            FB.api('/me',{field:['id','name','photos']}, function (response) {
-				  if(!response || response.error) {
-				    console.log(!response ? 'error occurred' : response.error);
-				    return;
-				  }
-
-
-
-				User.findOne()
-					.where({fbid: response.id})
-					.where({name: response.name})
-					.exec(function(err,users){
-						if(err) throw err;
-						if(!users){
-							console.log('Find nothing...');
-							User.create({fbid: response.id, name: response.name})
-								.exec(function(err,user){
-									console.log("Create user: "+user.name);
-								});
-						}
-						else{
-							console.log("Get user:" +users.name);
-
-						}
-					})
-
-
-
-				res.render("home/index",{
-		            title: "News",
-		            user_name: response.name,
-		            user_id: response.id,
-		            user_photo: response.photos
-
-	          	});
-			});
-
-
-
-
-	      }
-
-
+						User.create({fbid: response.id, name: response.name, sex: response.gender, email: response.email })
+							.exec(function(err,user){
+								console.log("Create user: "+user.name);
+								req.session.user = user.id
+								req.session.save()
+								res.view("home/index",{
+						            title: "News",
+						            user: user
+					        	})
+					            // user_photo: user.photos
+							});
+					}
+					else{
+						console.log("Get user:" +user.name);
+						req.session.user = user.id
+						req.session.save()
+						res.view("home/index",{
+				            title: "News",
+				            user: user
+			        	})
+					}
+				})
+          	});
+		};
     },
     fblogout: function(req,res){
-		console.log(req.session)
+		// req.logout();
 		req.session.destroy()
-		// req.session.save()
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		console.log(req.session)
-		// req.session.save()
-		// req.logout()
 		res.redirect('/');
     },
 

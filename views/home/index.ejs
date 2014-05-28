@@ -11,10 +11,9 @@
     <input type="submit" value="Log Out"/>
   </form>
   <ul>
-    <li><%= user_name %></li>
-    <li><%= user_id %></li>
+    <li><a href="/user/show/<%=user.id %>"><%= user.name %></a></li>
   </ul>
   <ul>
-    <li ng-repeat="news in newses"><a href="/news/{{ news.id }}">news</a></li>
+    <li ng-repeat="news in newses"><a href="/news/show/{{ news.id }}">{{ news.id }}</a></li>
   </ul>
 </div>

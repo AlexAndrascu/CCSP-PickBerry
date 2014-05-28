@@ -11,8 +11,8 @@ module.exports = {
     fbid: 'string',
     name: 'string',
   	email: 'string',
-  	
-  	
+  	sex: 'string',
+
   	reports:{
   		collection: 'report',
   		via: 'owner'

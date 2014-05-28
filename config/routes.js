@@ -57,9 +57,17 @@ module.exports.routes = {
     controller: "user",
     action: 'getAllComments'
   },
+  '/reasons/show/user/:id':{
+    controller: "user",
+    action: 'getAllReasons'
+  },
   '/reports/show/user/:id':{
     controller: "user",
     action: 'getAllReports'
+  },
+  '/getCurrentUser':{
+    controller: "user",
+    action: 'getCurrentUser'
   },
   // '/comments/api/user/:id':{
   //   controller: "comment",

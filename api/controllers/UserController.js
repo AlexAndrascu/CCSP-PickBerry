@@ -6,7 +6,9 @@
  */
 
 module.exports = {
-
+	getCurrentUser: function(req,res){
+		res.json(req.session.user)
+	},
 	show: function(req,res){
 		var id = req.param("id");
 		User.findOne({
