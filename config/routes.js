@@ -79,6 +79,16 @@ module.exports.routes = {
     action: 'getUri'
   },
 
+  '/google/checkLogin':{
+    controller: 'home',
+    action: 'getSession'
+  },
+  '/google/login':{
+    controller: 'home',
+    action: 'exfblogin'
+  },
+
+
 
 
   // '/comments/api/user/:id':{

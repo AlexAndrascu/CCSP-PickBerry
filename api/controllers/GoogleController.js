@@ -60,7 +60,7 @@ module.exports = {
 						case "china":
 						title = $('header').children('h1').text();
 						content = $('article.clear-fix p').text();
-						pic = $('div.pic img').attr('src');
+						pic = $('article.clear-fix div.pic img').attr('src');
 
 						break;
 

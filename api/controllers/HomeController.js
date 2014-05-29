@@ -6,7 +6,7 @@ var passport = require('passport')
 FB.options({
     appId:          config.facebook.appId,
     appSecret:      config.facebook.appSecret,
-    redirectUri:    config.facebook.redirectUri
+    redirectUri:    config.facebook.redirectUri+"fblogin"
 });
 
 module.exports = {
@@ -73,7 +73,10 @@ module.exports = {
 		res.redirect('/');
     },
 
+
+
     fblogin: function(req, res, next){
+
     	var code            = req.query.code;
 
 	    if(req.query.error) {
@@ -107,8 +110,72 @@ module.exports = {
 	            if(err) return next(err);
 	            req.session.access_token    = result.access_token;
 	            req.session.expires         = result.expires || 0;
-	            res.redirect('/');
+
+
+		    	
+		    	res.redirect('/');
+		    	
+
+	            
 	        }
 	    )
+    },
+
+    exfblogin: function(req ,res, next){
+    	var code            = req.query.code;
+
+	    if(req.query.error) {
+	        // user might have disallowed the app
+	        return res.send('login-error ' + req.query.error_description);
+	    } else if(!code) {
+	        return res.send({
+	        	login: false
+
+	        });
+	    }
+
+	    Step(
+	        function exchangeCodeForAccessToken() {
+	            FB.napi('oauth/access_token', {
+	                client_id:      FB.options('appId'),
+	                client_secret:  FB.options('appSecret'),
+	                redirect_uri:   "http://localhost:1337/exfblogin",
+	                code:           code
+	            }, this);
+
+	        },
+	        function extendAccessToken(err, result) {
+	            if(err) throw(err);
+	            FB.napi('oauth/access_token', {
+	                client_id:          FB.options('appId'),
+	                client_secret:      FB.options('appSecret'),
+	                grant_type:         'fb_exchange_token',
+	                fb_exchange_token:  result.access_token
+	            }, this);
+	            	        },
+	        //set session
+	        function (err, result) {
+	            if(err) return next(err);
+	            req.session.access_token    = result.access_token;
+	            req.session.expires         = result.expires || 0;
+
+
+		    	
+		    	res.send({
+		    		login: "login",
+		    	});
+		    	
+
+	            
+	        }
+	    )
+	},
+
+
+    getSession: function(req, res){
+    	res.send({
+    		loginUrl: FB.getLoginUrl({ scope: 'public_profile,user_photos,email'}),
+    		Session: req.session
+    	})
     },
 };
