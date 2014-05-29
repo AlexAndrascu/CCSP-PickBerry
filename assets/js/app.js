@@ -78,6 +78,8 @@
         }
     }
 
+
+
     $scope.reason = {};
     $scope.submitReason = function() {
         console.log('/reason/create?content='+$scope.reason.url+'&owner='+current_user)
@@ -86,16 +88,35 @@
         }
     }
 
+    $scope.news = {};
+    $scope.submitNews = function(){
+      socket.post('/news/addNews',{uri:$scope.news.uri},function(data){
+        console.log(data)
+        $scope.newses.push(data);
+        $scope.$apply();
+      })
+    }
 
 
     socket.on('message', function messageReceived(message) {
       console.log(message)
-
-      if(message.verb=== "create"&&message.model==="report"){
-        $scope.reports.push(message.data);
-        $scope.$apply();
+      if(message.verb=== "create"){
+        switch (message.model){
+          case newses:
+            $scope.newses.push(message.data);
+            $scope.$apply();
+            break;
+          case reason:
+            $scope.reason.push(message.data);
+            $scope.$apply();
+            break;
+          case report:
+            $scope.reports.push(message.data);
+            $scope.$apply();
+            break;
+        }
       }
-      if(message.verb=== "destroy"&&message.model==="report"){
+      if(message.verb=== "destroy"){
         $scope.reports.forEach(function(report,idx){
           if(report.id==message.id){
             $scope.reports.splice(idx,1);

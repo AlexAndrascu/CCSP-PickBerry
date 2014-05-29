@@ -37,7 +37,10 @@ module.exports.routes = {
     action: "index"
   },
 
-
+  'post /news/addNews':{
+    controller: 'news',
+    action: 'addNews'
+  },
   '/fblogin': {
     controller: "home",
     action: "fblogin"
