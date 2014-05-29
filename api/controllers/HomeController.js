@@ -40,6 +40,7 @@ module.exports = {
 							.exec(function(err,user){
 								console.log("Create user: "+user.name);
 								req.session.user = user.id
+								req.session.authenticated = true
 								req.session.save()
 								res.view("home/index",{
 						            title: "News",
@@ -55,7 +56,9 @@ module.exports = {
 						user.save()
 						console.log("Get user:" +user.name);
 						req.session.user = user.id
+						req.session.authenticated = true
 						req.session.save()
+						console.log(req.session.authenticated)
 						res.view("home/index",{
 				            title: "News",
 				            user: user

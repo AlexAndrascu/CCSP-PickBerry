@@ -2,7 +2,7 @@
   	<p><%= name %></p>
 	<div ng-repeat="report in reports">
 		<div>{{ report.content }}</div>
-		<div>{{ report.rep_news }}</div>
+		<div><a href="/news/show/{{report.rep_news}}">{{ report.rep_news }}</a></div>
 		<!-- <div>{{ report.owner }}</div> -->
 	</div>
 </div>

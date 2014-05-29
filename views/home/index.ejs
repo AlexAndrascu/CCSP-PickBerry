@@ -1,5 +1,9 @@
 <div ng-app="fucknews" class="container" ng-controller="homepage">
   <form>
+    <input ng-model="news.uri" type="text" placeholder="I want to fuck this news" value="">
+    <button ng-click="submitNews()">submit</button>
+  </form>
+  <form>
     <input ng-model="report.url" type="text" placeholder="I want to report this news" value="">
     <button ng-click="submitReport()">submit</button>
   </form>
@@ -14,6 +18,6 @@
     <li><a href="/user/show/<%=user.id %>"><%= user.name %></a></li>
   </ul>
   <ul>
-    <li ng-repeat="news in newses"><a href="/news/show/{{ news.id }}">{{ news.id }}</a></li>
+    <li ng-repeat="news in newses"><a href="/news/show/{{ news.id }}">{{ news.title }}</a></li>
   </ul>
 </div>
