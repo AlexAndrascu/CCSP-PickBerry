@@ -58,6 +58,9 @@ module.exports = {
 						content: content
 					})
 					.exec(function(err, news){
+						if(err){
+							console.log(err)
+						}
 						console.log(news)
 						if(news.length == 0){
 							exist = 0;
@@ -66,18 +69,21 @@ module.exports = {
 								media: media,
 								content: content,
 								imgurl: pic
-							}).exec(function(err,create_news){
-								console.log(create_news)
+							}).exec(function(err,news){
+								console.log(news)
 								console.log("not found")
+								res.send({
+									news: news
+								});
 							})
 						}
 						else{
 							console.log("found")
 							exist = 1;
+							res.send({
+								news: news
+							});
 						}
-						res.end({
-							news:news
-						});
 					});
 				}
 			})

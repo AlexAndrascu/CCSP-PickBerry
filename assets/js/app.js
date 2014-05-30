@@ -59,11 +59,19 @@
       console.log.apply(console, arguments);
     }
   }
-  var app = angular.module("fucknews", [])
+  var app = angular.module("fucknews", ['ngResource'])
   console.log("Angularjs loaded")
-
-  app.controller("homepage", function($scope) {
+  app.factory('userFactory',function($resource){
+    return $resource('/user/:id',{ id: '@_id' })
+  })
+  app.controller("homepage", function($scope, userFactory) {
     console.log('Homepage controller loaded')
+
+    socket.get('/news',function(newses){
+      $scope.newses = newses
+      $scope.$apply()
+      console.log($scope.newses)
+    })
 
     var current_user
     socket.get('/getCurrentUser',function(data){
@@ -78,8 +86,6 @@
         }
     }
 
-
-
     $scope.reason = {};
     $scope.submitReason = function() {
         console.log('/reason/create?content='+$scope.reason.url+'&owner='+current_user)
@@ -91,8 +97,7 @@
     $scope.news = {};
     $scope.submitNews = function(){
       socket.post('/news/addNews',{uri:$scope.news.uri},function(data){
-        console.log(data)
-        $scope.newses.push(data);
+        $scope.newses.push(data.news);
         $scope.$apply();
       })
     }
@@ -126,10 +131,6 @@
       }
     });
 
-    socket.get('/news',function(newses){
-      $scope.newses = newses
-      $scope.$apply()
-    })
   }).directive('forceModelUpdate', function($compile) {
     return {
         restrict: 'A',

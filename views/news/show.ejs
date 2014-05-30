@@ -1,7 +1,10 @@
 <div ng-app="fucknews" class="container" ng-controller="news">
   <%= content %>
   <ul>
-    <li ng-repeat="comment in news.comments">{{comment}}</li>
+    <li ng-repeat="comment in news.comments">
+      {{comment.content}}
+      <a href="/user/show/{{comment.owner}}">{{comment.owner}}</a>
+    </li>
   </ul>
   <ul>
     <li ng-repeat="reason in news.reasons">{{reason}}</li>
