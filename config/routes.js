@@ -73,7 +73,14 @@ module.exports.routes = {
     controller: "user",
     action: 'getCurrentUser'
   },
-
+  '/news/report/:id':{
+    controller: "news",
+    action: 'reportThisNews'
+  },
+  '/news/reportForm/:id':{
+    controller: "report",
+    action: 'getReportForm'
+  },
 
   ////這邊是 GOOGLE EXTENSION的PART
 

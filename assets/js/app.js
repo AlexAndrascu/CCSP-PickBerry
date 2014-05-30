@@ -59,12 +59,16 @@
       console.log.apply(console, arguments);
     }
   }
+
   var app = angular.module("fucknews", ['ngResource'])
+
   console.log("Angularjs loaded")
+
   app.factory('userFactory',function($resource){
     return $resource('/user/:id',{ id: '@_id' })
   })
-  app.controller("homepage", function($scope, userFactory) {
+
+  app.controller("homepage", function($scope, userFactory,$http) {
     console.log('Homepage controller loaded')
 
     socket.get('/news',function(newses){
@@ -72,6 +76,8 @@
       $scope.$apply()
       console.log($scope.newses)
     })
+
+
 
     var current_user
     socket.get('/getCurrentUser',function(data){
