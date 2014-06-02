@@ -90,12 +90,12 @@ module.exports.routes = {
   },
 
   '/google/checkLogin':{
-    controller: 'home',
+    controller: 'google',
     action: 'getSession'
   },
   '/google/login':{
-    controller: 'home',
-    action: 'exfblogin'
+    controller: 'google',
+    action: 'fblogin'
   },
 
 
