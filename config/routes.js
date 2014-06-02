@@ -73,10 +73,11 @@ module.exports.routes = {
     controller: "user",
     action: 'getCurrentUser'
   },
-  '/news/report/:id':{
+  'post /news/report/:id':{
     controller: "news",
     action: 'reportThisNews'
   },
+
   '/news/reportForm/:id':{
     controller: "report",
     action: 'getReportForm'

@@ -94,27 +94,43 @@ module.exports = {
 	},
 
 	reportThisNews: function(req,res){
-		request.post('https://www.win.org.tw/cap/pleadSend_010401.jsp',{
-			form:{
-				'src_type':'9',
-				'protect':'9',
-				'Classification':'6.4',
-				'PleadURL':'',
-				'Description':'',
-				'countdown':'300',
-				'Name':'HOwearfd',
-				'eMail':'how2945ard@gmail.com',
-				'Sex':'Male',
-				'submit.x':'85',
-  				'submit.y':'7'
-			},
-			header:{
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Referer': 'http://www.win.org.tw/iwin/report.html'
-			}},
-			function(e,r,body){
-				res.redirect('/');
+		console.log(req.session.user)
+		Report.create({
+			content: req.param('content'),
+			rep_news: req.param('id'),
+			owner: req.session.user
+		}).exec(function(e,report){
+			Report.findOne({
+				content: report.content,
+				rep_news: report.rep_news,
+				owner: report.owner
+			}).populate('owner').populate('rep_news').exec(function(e,report){
+				console.log(report)
+				console.log("!!!!!!!!!!")
+				console.log(report.owner.email)
+			})
 		})
+		// request.post('https://www.win.org.tw/cap/pleadSend_010401.jsp',{
+		// 	form:{
+		// 		'src_type':'9',
+		// 		'protect':'9',
+		// 		'Classification':'6.4',
+		// 		'PleadURL':'',
+		// 		'Description':'',
+		// 		'countdown':'300',
+		// 		'Name':'HOwearfd',
+		// 		'eMail':'how2945ard@gmail.com',
+		// 		'Sex':'Male',
+		// 		'submit.x':'85',
+  // 			'submit.y':'7'
+		// 	},
+		// 	header:{
+		// 		'Content-Type': 'application/x-www-form-urlencoded',
+		// 		'Referer': 'http://www.win.org.tw/iwin/report.html'
+		// 	}},
+		// 	function(e,r,body){
+		// 		res.redirect('/');
+		// })
 	},
 
 	show: function(req,res){

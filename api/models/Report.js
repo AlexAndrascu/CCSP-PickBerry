@@ -15,9 +15,7 @@ module.exports = {
   		model: 'news'
   	},
 
-
   	sent:'bool',	//是否寄出
-
 
   	owner:{			//檢舉人
   		model: 'user'
