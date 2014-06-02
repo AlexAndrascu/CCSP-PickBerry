@@ -12,7 +12,7 @@ module.exports = {
   	name: 'string',
   	money: 'string', //金主
   	relation: 'string',  //關聯
-
+    email: 'string',
   	news_pool: {		//一個企業有很多新聞
   		collection:'news',
   		via:'parent_domain'

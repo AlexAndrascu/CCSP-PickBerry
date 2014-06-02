@@ -55,39 +55,45 @@ module.exports = {
 						default:
 							console.log("Scrap nothing!");
 					};
-					News.find({
-						title: title,
-						media: media,
-						content: content
-					})
-					.exec(function(err, news){
-						if(err){
-							console.log(err)
-						}
-						console.log(news)
-						if(news.length == 0){
-							exist = 0;
-							News.create({
-								title: title,
-								media: media,
-								content: content,
-								imgurl: pic
-							}).exec(function(err,news){
-								console.log(news)
-								console.log("not found")
+					Company.find({
+						name: media
+					}).exec(function(err,company){
+						News.find({
+							title: title,
+							media: media,
+							parent_domain: company,
+							content: content
+						})
+						.exec(function(err, news){
+							if(err){
+								console.log(err)
+							}
+							console.log(news)
+							if(news.length == 0){
+								exist = 0;
+								News.create({
+									title: title,
+									media: media,
+									parent_domain: company,
+									content: content,
+									imgurl: pic
+								}).exec(function(err,news){
+									console.log(news)
+									console.log("not found")
+									res.send({
+										news: news
+									});
+								})
+							}
+							else{
+								console.log("found")
+								exist = 1;
 								res.send({
 									news: news
 								});
-							})
-						}
-						else{
-							console.log("found")
-							exist = 1;
-							res.send({
-								news: news
-							});
-						}
-					});
+							}
+						});
+					})
 				}
 			})
 		}
