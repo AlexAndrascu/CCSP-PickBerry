@@ -27,7 +27,7 @@ module.exports = {
 			media = "et";
 			break;
 		default:
-			console.log('NOT media OR unscrapable!')
+			res.send({scrape: false});
 		}
 		if(media != "nothing"){
 			console.log("media: " + media);

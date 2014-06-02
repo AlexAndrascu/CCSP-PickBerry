@@ -74,7 +74,7 @@ module.exports = {
     fblogout: function(req,res){
 		// req.logout();
 		req.session.destroy()
-		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		
 		console.log(req.session)
 		res.redirect('/');
     },
