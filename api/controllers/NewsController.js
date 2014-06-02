@@ -6,7 +6,7 @@
  */
 
 var request = require('request')
-
+var nodemailer = require("nodemailer");
 
 module.exports = {
 	addNews: function(req,res){
@@ -111,11 +111,50 @@ module.exports = {
 				rep_news: report.rep_news,
 				owner: report.owner
 			}).populate('owner').populate('rep_news').exec(function(e,report){
-				console.log(report)
-				console.log("!!!!!!!!!!")
-				console.log(report.owner.email)
+				Company.findOne({
+					name: report.rep_news.media
+				}).exec(function(err,company){
+					var smtpTransport = nodemailer.createTransport("SMTP",{
+					    service: "Gmail",
+					    auth: {
+					        user: "how2945ard@gmail.com",
+					        pass: ""
+					    }
+					});
+					var mailOptions = {
+					    from: report.owner.email, // sender address
+					    to: "how2945ard@gmail.com",//report.owner.email+","+company.email // list of receivers
+					    subject: "Hello ✔", // Subject line
+					    text: report.content, // plaintext body
+					    // html:  // html body
+					}
+					smtpTransport.sendMail(mailOptions, function(error, response){
+					    if(error){
+					        console.log(error);
+					    }else{
+					    	report.sent = true
+					        console.log("Message sent: " + response.message);
+					    }
+
+					    // if you don't want to use this transport object anymore, uncomment following line
+					    smtpTransport.close(); // shut down the connection pool, no more messages
+					    res.view('reports/sent',{
+					    	id: report.rep_news.id,
+							content: report.rep_news.content,
+							imgurl: report.rep_news.imgurl,
+							url: report.rep_news.url,
+							reasons: report.rep_news.reasons,
+							comments: report.rep_news.comments,
+							parent_domain: report.rep_news.parent_domain,
+							news: report.rep_news,
+							content: report.rep_news.content,
+							title: "Report "+report.rep_news.title
+					    })
+					});
+				})
 			})
 		})
+
 		// request.post('https://www.win.org.tw/cap/pleadSend_010401.jsp',{
 		// 	form:{
 		// 		'src_type':'9',
@@ -138,6 +177,8 @@ module.exports = {
 		// 		res.redirect('/');
 		// })
 	},
+
+
 
 	show: function(req,res){
 		var id = req.param("id");
