@@ -1,9 +1,11 @@
-/**
- * GoogleController
- *
- * @description :: Server-side logic for managing googles
- * @help        :: See http://links.sailsjs.org/docs/controllers
- */
+var FB = require('fb');
+var FBgoogle = require('fb');
+var Step = require('step');
+var config = require('../../config/local');
+var passport = require('passport')
+
+
+
 
 module.exports = {
 	getUri: function(req, res){
@@ -25,7 +27,7 @@ module.exports = {
 			media = "et";
 			break;
 		default:
-			console.log('NOT media OR unscrapable!')
+			res.send({scrape: false});
 		}
 		if(media != "nothing"){
 			console.log("media: " + media);
@@ -73,6 +75,74 @@ module.exports = {
 				}
 			})
 		}
-	}
+	},
+
+
+
+	fblogout: function(req,res){
+		// req.logout();
+		req.session.destroy()
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		console.log(req.session)
+		res.redirect('/');
+    },
+
+
+
+    fblogin: function(req, res, next){
+
+    	var code            = req.query.code;
+
+	    if(req.query.error) {
+	        // user might have disallowed the app
+	        return res.send('login-error ' + req.query.error_description);
+	    } else if(!code) {
+	        return res.redirect('/')
+	    }
+
+	    Step(
+	        function exchangeCodeForAccessToken() {
+	            FB.napi('oauth/access_token', {
+	                client_id:      FB.options('appId'),
+	                client_secret:  FB.options('appSecret'),
+	                redirect_uri:   config.facebook.redirectUri+"google/login",
+	                code:           code
+	            }, this);
+
+	        },
+	        function extendAccessToken(err, result) {
+	            if(err) throw(err);
+	            FB.napi('oauth/access_token', {
+	                client_id:          FB.options('appId'),
+	                client_secret:      FB.options('appSecret'),
+	                grant_type:         'fb_exchange_token',
+	                fb_exchange_token:  result.access_token
+	            }, this);
+	            	        },
+	        //set session
+	        function (err, result) {
+	            if(err) return next(err);
+	            req.session.access_token    = result.access_token;
+	            req.session.expires         = result.expires || 0;
+
+
+		    	
+		    	res.redirect('/');
+		    	
+
+	            
+	        }
+	    )
+    },
+
+    getSession: function(req, res){
+    	res.send({
+    		loginUrl: FB.getLoginUrl({
+    			 scope: 'public_profile,user_photos,email',
+    			 redirect_uri: config.facebook.redirectUri+"google/login"
+    		}),
+    		Session: req.session
+    	})
+    },
 };
 

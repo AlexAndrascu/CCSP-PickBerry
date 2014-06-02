@@ -1,13 +1,16 @@
 var FB = require('fb');
+var FBgoogle = require('fb');
 var Step = require('step');
 var config = require('../../config/local');
 var passport = require('passport')
+
 
 FB.options({
     appId:          config.facebook.appId,
     appSecret:      config.facebook.appSecret,
     redirectUri:    config.facebook.redirectUri+"fblogin"
 });
+
 
 module.exports = {
 	index: function(req,res){
@@ -71,7 +74,7 @@ module.exports = {
     fblogout: function(req,res){
 		// req.logout();
 		req.session.destroy()
-		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		
 		console.log(req.session)
 		res.redirect('/');
     },
@@ -145,6 +148,7 @@ module.exports = {
 	                redirect_uri:   "http://localhost:1337/exfblogin",
 	                code:           code
 	            }, this);
+	            console.log('exfblogin!')
 
 	        },
 	        function extendAccessToken(err, result) {
@@ -176,6 +180,7 @@ module.exports = {
 
 
     getSession: function(req, res){
+    	console.log(FB.getLoginUrl({ scope: 'public_profile,user_photos,email'}));
     	res.send({
     		loginUrl: FB.getLoginUrl({ scope: 'public_profile,user_photos,email'}),
     		Session: req.session
