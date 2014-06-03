@@ -93,11 +93,20 @@ module.exports.routes = {
     controller: 'google',
     action: 'getSession'
   },
+  '/google/checkLoginBack':{
+    controller: 'google',
+    action:'getSessionBack'
+  },
+
   '/google/login':{
     controller: 'google',
     action: 'fblogin'
   },
 
+  'post /google/newsdata':{
+    controller: 'news',
+    action: 'findByUrl'
+  },
 
 
 

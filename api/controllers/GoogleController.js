@@ -144,5 +144,11 @@ module.exports = {
     		Session: req.session
     	})
     },
+
+    getSessionBack: function(req, res){
+    	res.send({
+    		Session: req.session
+    	})
+    },
 };
 

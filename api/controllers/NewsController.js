@@ -140,6 +140,40 @@ module.exports = {
 				title: news.title
 			});
 		});
+	},
+
+	findByUrl: function(req, res){
+		var url = req.body.url;
+		console.log('新聞URL: '+url);
+		News.findOne({url: url})
+			.exec(function (err, news){
+				if (err) {
+					req.flash("info", "info: you point to wrong number");
+					return res.redirect("/");
+				}
+				if (news){
+					res.send( {
+						id: news.id,
+						content: news.content,
+						imgurl: news.imgurl,
+						url: news.url,
+						hot: news.hot,
+						reasons: news.reasons,
+						comments: news.comments,
+						parent_domain: news.parent_domain,
+						news: news,
+						content: news.content,
+						title: news.title
+					});
+				}
+				else{
+					res.send({
+						find: false
+					})
+				}
+				
+			});
+
 	}
 };
 
