@@ -10,7 +10,6 @@ var nodemailer = require("nodemailer");
 
 module.exports = {
 	addNews: function(req,res){
-		console.log(req.body);
 		var request = require('request');
 		var cheerio = require('cheerio');
 		var db=[],news,newsid=1;
@@ -55,10 +54,10 @@ module.exports = {
 						default:
 							console.log("Scrap nothing!");
 					};
-					Company.find({
+					Company.findOne({
 						name: media
 					}).exec(function(err,company){
-						News.find({
+						News.findOne({
 							title: title,
 							media: media,
 							content: content
@@ -67,8 +66,7 @@ module.exports = {
 							if(err){
 								console.log(err)
 							}
-							console.log(news)
-							if(news.length == 0){
+							if(!news){
 								exist = 0;
 								News.create({
 									title: title,
@@ -76,9 +74,10 @@ module.exports = {
 									parent_domain: company,
 									content: content,
 									imgurl: pic,
-									url: incomingurl
+									url: incomingurl,
+									hot: 1
 								}).exec(function(err,news){
-									console.log(news)
+									
 									console.log("not found")
 									res.send({
 										news: news
@@ -88,6 +87,11 @@ module.exports = {
 							else{
 								console.log("found")
 								exist = 1;
+								news.hot += 1;
+								news.save(function(err){
+
+								});
+
 								res.send({
 									news: news
 								});
@@ -97,6 +101,7 @@ module.exports = {
 				}
 			})
 		}
+
 	},
 
 	reportThisNews: function(req,res){
@@ -222,7 +227,6 @@ module.exports = {
 					return res.redirect("/");
 				}
 				if (news){
-					console.log(news);
 					res.send( {
 						find: true,
 						id: news.id,
