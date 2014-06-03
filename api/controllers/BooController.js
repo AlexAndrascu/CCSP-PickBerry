@@ -22,6 +22,21 @@ module.exports = {
 				})
 			}
 		})
+	},
+
+	getNewsId: function(req, res){
+		console.log("喔！");
+		News.findOne({
+			url: req.body.newsurl
+		}).exec(function(err,news){
+			if(news){
+				console.log("goo!!");
+				console.log(news);
+				res.send({newsid: news.id});
+			}
+
+
+		})
 	}
 };
 
