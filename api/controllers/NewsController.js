@@ -99,6 +99,29 @@ module.exports = {
 		}
 	},
 
+	getAllCommenter: function(req,res){
+		var id = req.param('id')
+		Comment.find({
+			com_news: id
+		}).populate('owner').exec(function(err,comments){
+			res.send({
+				comments: comments
+			})
+		})
+	},
+
+	getAllReasoner: function(req,res){
+		var id = req.param('id')
+		Reason.find({
+			parent_news: id
+		}).populate('owner').populate('voters').exec(function(err,reasons){
+			console.log(reasons)
+			res.send({
+				reasons: reasons
+			})
+		})
+	},
+
 	reportThisNews: function(req,res){
 		console.log(req.session.user)
 		Report.create({

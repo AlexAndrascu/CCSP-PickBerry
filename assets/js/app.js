@@ -182,8 +182,19 @@
     console.log('News controller loaded')
     socket.get('/news/'+new_id,function(news){
       $scope.news = news
-      $scope.$apply()
-      console.log(news)
+      socket.get('/news/getAllCommenter/'+new_id,function(data){
+        data.comments.forEach(function(val,index){
+          $scope.news.comments[index] = val
+          $scope.$apply()
+        })
+        socket.get('/news/getAllReasoner/'+new_id,function(data){
+          console.log(data)
+          data.reasons.forEach(function(val,index){
+            $scope.news.reasons[index] = val
+            $scope.$apply()
+          })
+        })
+      })
     })
 
     $scope.report = {};
@@ -197,16 +208,24 @@
     $scope.comment = {}
     $scope.submitComment = function(){
       socket.get('/comment/create?content='+$scope.comment.content+'&com_news='+new_id+'&owner='+current_user,function(data){
-        $scope.news.comments.push(data)
-        $scope.$apply()
+        socket.get('/news/getAllCommenter/'+new_id,function(data){
+          data.comments.forEach(function(val,index){
+            $scope.news.comments[index] = val
+            $scope.$apply()
+          })
+        })
       })
     }
 
     $scope.reason = {};
     $scope.submitReason = function() {
       socket.get('/reason/create?parent_news='+new_id+'&content='+$scope.reason.content+'&owner='+current_user,function(data){
-        $scope.news.reasons.push(data);
-        $scope.$apply();
+        socket.get('/news/getAllReasoner/'+new_id,function(data){
+          data.reason.forEach(function(val,index){
+            $scope.news.reasons[index] = val
+            $scope.$apply()
+          })
+        })
       })
     }
   })
@@ -235,8 +254,6 @@
         $scope.$apply()
     })
   })
-
-  
 
 
   app.controller("userReasons", function($scope,$location) {

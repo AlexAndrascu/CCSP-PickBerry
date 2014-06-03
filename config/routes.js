@@ -82,7 +82,14 @@ module.exports.routes = {
     controller: "report",
     action: 'getReportForm'
   },
-
+  '/news/getAllCommenter/:id':{
+    controller: 'news',
+    action: 'getAllCommenter'
+  },
+  '/news/getAllReasoner/:id':{
+    controller: 'news',
+    action: 'getAllReasoner'
+  },
   ////這邊是 GOOGLE EXTENSION的PART
 
   'post /google/uri':{
