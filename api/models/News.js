@@ -35,6 +35,12 @@ module.exports = {
       via: 'com_news'
     },
 
+    boos:{
+      collection: 'boo',
+      via: 'parent_news'
+
+    },
+
     parent_domain:{  //哪家新聞台
       model: 'company'
     }

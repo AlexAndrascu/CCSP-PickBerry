@@ -57,7 +57,7 @@ module.exports = {
 					News.findOne()
 					.where({url: incomingurl})
 					.exec(function(err, fnews){
-
+						console.log(fnews);
 						if(!fnews){
 							exist = 0;
 							res.send({
@@ -92,18 +92,6 @@ module.exports = {
 			})
 		}
 	},
-
-
-
-	fblogout: function(req,res){
-		// req.logout();
-		req.session.destroy()
-		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-		console.log(req.session)
-		res.redirect('/');
-    },
-
-
 
     fblogin: function(req, res, next){
 
