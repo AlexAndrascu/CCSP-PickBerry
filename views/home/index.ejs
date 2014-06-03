@@ -4,13 +4,6 @@
     <button ng-click="submitNews()">submit</button>
   </form>
   <form>
-    <input ng-model="report.url" type="text" placeholder="I want to report this news" value="">
-    <button ng-click="submitReport()">submit</button>
-  </form>
-  <form>
-    <input ng-model="reason.url" type="text" placeholder="I want to report this news" value="">
-    <button ng-click="submitReason()">submit</button>
-  </form>
   <form action="/logout" method="post">
     <input type="submit" value="Log Out"/>
   </form>
@@ -18,6 +11,11 @@
     <li><a href="/user/show/<%=user.id %>"><%= user.name %></a></li>
   </ul>
   <ul>
-    <li ng-repeat="news in newses"><a href="/news/show/{{ news.id }}">{{ news.title }}</a></li>
+  <li ng-repeat="phone in phones | filter:query | limitTo:quantity | orderBy:orderProp">
+    <li ng-repeat="news in newses | limitTo:5 | orderBy: 'hot' ">
+      <a href="/news/show/{{ news.id }}">
+        {{ news.title }}
+      </a>
+    </li>
   </ul>
 </div>

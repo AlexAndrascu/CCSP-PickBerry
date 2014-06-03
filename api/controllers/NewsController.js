@@ -6,7 +6,7 @@
  */
 
 var request = require('request')
-
+var nodemailer = require("nodemailer");
 
 module.exports = {
 	addNews: function(req,res){
@@ -55,77 +55,144 @@ module.exports = {
 						default:
 							console.log("Scrap nothing!");
 					};
-					News.find({
-						title: title,
-						media: media,
-						content: content
-					})
-					.exec(function(err, news){
-						if(err){
-							console.log(err)
-						}
-						console.log(news)
-						if(news.length == 0){
-							exist = 0;
-							News.create({
-								title: title,
-								media: media,
-								content: content,
-								imgurl: pic
-							}).exec(function(err,news){
-								console.log(news)
-								console.log("not found")
+					Company.find({
+						name: media
+					}).exec(function(err,company){
+						News.find({
+							title: title,
+							media: media,
+							content: content
+						})
+						.exec(function(err, news){
+							if(err){
+								console.log(err)
+							}
+							console.log(news)
+							if(news.length == 0){
+								exist = 0;
+								News.create({
+									title: title,
+									media: media,
+									parent_domain: company,
+									content: content,
+									imgurl: pic,
+									url: incomingurl
+								}).exec(function(err,news){
+									console.log(news)
+									console.log("not found")
+									res.send({
+										news: news
+									});
+								})
+							}
+							else{
+								console.log("found")
+								exist = 1;
 								res.send({
 									news: news
 								});
-							})
-						}
-						else{
-							console.log("found")
-							exist = 1;
-							res.send({
-								news: news
-							});
-						}
-					});
+							}
+						});
+					})
 				}
 			})
 		}
 	},
 
 	reportThisNews: function(req,res){
-		request.post('https://www.win.org.tw/cap/pleadSend_010401.jsp',{
-			form:{
-				'src_type':'9',
-				'protect':'9',
-				'Classification':'6.4',
-				'PleadURL':'',
-				'Description':'',
-				'countdown':'300',
-				'Name':'HOwearfd',
-				'eMail':'how2945ard@gmail.com',
-				'Sex':'Male',
-				'submit.x':'85',
-  				'submit.y':'7'
-			},
-			header:{
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Referer': 'http://www.win.org.tw/iwin/report.html'
-			}},
-			function(e,r,body){
-				res.redirect('/');
+		console.log(req.session.user)
+		Report.create({
+			content: req.param('content'),
+			rep_news: req.param('id'),
+			owner: req.session.user
+		}).exec(function(e,report){
+			Report.findOne({
+				content: report.content,
+				rep_news: report.rep_news,
+				owner: report.owner
+			}).populate('owner')
+			.populate('rep_news').exec(function(e,report){
+				Company.findOne({
+					name: report.rep_news.media
+				}).exec(function(err,company){
+					var smtpTransport = nodemailer.createTransport("SMTP",{
+					    service: "Gmail",
+					    auth: {
+					        user: "blueberrycollector@gmail.com",
+					        pass: "ccsp2014"
+					    }
+					});
+					var mailOptions = {
+					    from: report.owner.email, // sender address
+					    to: "how2945ard@gmail.com",//report.owner.email+","+company.email // list of receivers
+					    subject: "Hello ✔", // Subject line
+					    text: report.content, // plaintext body
+					    // html:  // html body
+					}
+					smtpTransport.sendMail(mailOptions, function(error, response){
+					    if(error){
+					        console.log(error);
+					    }else{
+					    	report.sent = true
+					        console.log("Message sent: " + response.message);
+					    }
+
+					    // if you don't want to use this transport object anymore, uncomment following line
+					    smtpTransport.close(); // shut down the connection pool, no more messages
+					    res.view('reports/sent',{
+					    	id: report.rep_news.id,
+							content: report.rep_news.content,
+							imgurl: report.rep_news.imgurl,
+							url: report.rep_news.url,
+							reasons: report.rep_news.reasons,
+							comments: report.rep_news.comments,
+							parent_domain: report.rep_news.parent_domain,
+							news: report.rep_news,
+							content: report.rep_news.content,
+							title: "Report "+report.rep_news.title
+					    })
+					});
+				})
+			})
 		})
+
+		// request.post('https://www.win.org.tw/cap/pleadSend_010401.jsp',{
+		// 	form:{
+		// 		'src_type':'9',
+		// 		'protect':'9',
+		// 		'Classification':'6.4',
+		// 		'PleadURL':'',
+		// 		'Description':'',
+		// 		'countdown':'300',
+		// 		'Name':'HOwearfd',
+		// 		'eMail':'how2945ard@gmail.com',
+		// 		'Sex':'Male',
+		// 		'submit.x':'85',
+  // 			'submit.y':'7'
+		// 	},
+		// 	header:{
+		// 		'Content-Type': 'application/x-www-form-urlencoded',
+		// 		'Referer': 'http://www.win.org.tw/iwin/report.html'
+		// 	}},
+		// 	function(e,r,body){
+		// 		res.redirect('/');
+		// })
 	},
+
+
 
 	show: function(req,res){
 		var id = req.param("id");
 		News.findOne({
 			id: id
-		}).exec(function (err, news) {
+		}).populate('reports')
+		.populate('reasons')
+		.populate('comments').exec(function (err, news) {
 			if (err) {
 				req.flash("info", "info: you point to wrong number");
 				return res.redirect("/");
 			}
+			console.log(news.comments[0].owner)
 			res.view("news/show", {
 				id: news.id,
 				content: news.content,
@@ -134,6 +201,7 @@ module.exports = {
 				hot: news.hot,
 				reasons: news.reasons,
 				comments: news.comments,
+				comments_user: news.comments.owner,
 				parent_domain: news.parent_domain,
 				news: news,
 				content: news.content,

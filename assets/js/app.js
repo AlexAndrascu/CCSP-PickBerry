@@ -84,22 +84,6 @@
       current_user = data
     })
 
-    $scope.report = {};
-    $scope.submitReport = function() {
-        console.log('/report/create?content='+$scope.report.url+'&owner='+current_user)
-        socket.post('/report/create?content='+$scope.report.url+'&owner='+current_user),{},function(data){
-          console.log(data)
-        }
-    }
-
-    $scope.reason = {};
-    $scope.submitReason = function() {
-        console.log('/reason/create?content='+$scope.reason.url+'&owner='+current_user)
-        socket.post('/reason/create?content='+$scope.reason.url+'&owner='+current_user),{},function(data){
-          console.log(data)
-        }
-    }
-
     $scope.news = {};
     $scope.submitNews = function(){
       socket.post('/news/addNews',{uri:$scope.news.uri},function(data){
@@ -199,6 +183,7 @@
     socket.get('/news/'+new_id,function(news){
       $scope.news = news
       $scope.$apply()
+      console.log(news)
     })
 
     $scope.report = {};

@@ -1,7 +1,7 @@
 <div ng-app="fucknews" class="container" ng-controller="news">
-  <%= content %>
-  <a href="/news/reportForm/<%=news.id%>">report it!</a>
-  <ul>
+  <%= content %><br><br>
+  <div><a href="/news/reportForm/<%=news.id%>">report it! ( {{ news.reports.length }} reports )</a></div>
+  <ul><div>Comments:</div>
     <li ng-repeat="comment in news.comments">
       {{comment.content}}
       <a href="/user/show/{{comment.owner}}">{{comment.owner}}</a>
