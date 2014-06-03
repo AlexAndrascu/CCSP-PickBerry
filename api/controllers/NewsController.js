@@ -192,7 +192,6 @@ module.exports = {
 				req.flash("info", "info: you point to wrong number");
 				return res.redirect("/");
 			}
-			console.log(news.comments[0].owner)
 			res.view("news/show", {
 				id: news.id,
 				content: news.content,
@@ -214,13 +213,18 @@ module.exports = {
 		var url = req.body.url;
 		console.log('新聞URL: '+url);
 		News.findOne({url: url})
+			.populate('reports')
+			.populate('reasons')
+			.populate('comments')
 			.exec(function (err, news){
 				if (err) {
 					req.flash("info", "info: you point to wrong number");
 					return res.redirect("/");
 				}
 				if (news){
+					console.log(news);
 					res.send( {
+						find: true,
 						id: news.id,
 						content: news.content,
 						imgurl: news.imgurl,
@@ -228,6 +232,7 @@ module.exports = {
 						hot: news.hot,
 						reasons: news.reasons,
 						comments: news.comments,
+						comments_user: news.comments.owner,
 						parent_domain: news.parent_domain,
 						news: news,
 						content: news.content,
