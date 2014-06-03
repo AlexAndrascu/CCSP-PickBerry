@@ -225,6 +225,7 @@ module.exports = {
 		.populate('reasons')
 		.populate('comments')
 		.exec(function (err, news) {
+			console.log(news)
 			if (err) {
 				req.flash("info", "info: you point to wrong number");
 				return res.redirect("/");

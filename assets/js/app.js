@@ -91,6 +91,7 @@
     }
 
 
+
     socket.on('message', function messageReceived(message) {
       console.log(message)
       if(message.verb=== "create"){
@@ -144,6 +145,25 @@
       current_user = data
       console.log(data)
     })
+
+    $scope.vote = function(id,$index){
+      socket.get('/reason/'+id,function(data){
+        var voters = ''
+        data.voters.forEach(function(val,idx){
+          voters += val.id
+          if(data.voters.length!=0){
+            voters += ','
+          }
+        })
+        console.log(voters)
+        console.log(voters+current_user)
+        socket.put('/reason/'+id,{voters: voters+current_user},function(data){
+          console.log(data)
+          $scope.news.reasons[$index] = data
+          $scope.$apply()
+        })
+      })
+    }
 
     socket.on('message', function messageReceived(message) {
       console.log(message)

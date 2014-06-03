@@ -14,7 +14,9 @@
   <ul>
     <li ng-repeat="reason in news.reasons">
       {{reason.content}}
+      <div>owner:</div>
       <a href="/user/show/{{reason.owner.id}}">{{reason.owner.name}}</a>
+      <button ng-click="vote(reason.id,$index)">vote for this {{reason.voters.length}}</button>
     </li>
     <form>
       <input ng-model="reason.content" type="text" placeholder="I want to reason this news" value="">
