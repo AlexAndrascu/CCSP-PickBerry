@@ -81,6 +81,10 @@ module.exports.routes = {
     controller: "news",
     action: 'reportThisNews'
   },
+  '/user/boo/:id':{
+    controller: "user",
+    action: 'booNews'
+  },
   '/news/showAll':{
     controller: "news",
     action: 'showAll'

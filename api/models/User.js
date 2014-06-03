@@ -13,6 +13,11 @@ module.exports = {
   	email: 'string',
   	sex: 'string',
 
+    boos:{
+      collection: 'boo',
+      via: 'owner'
+    },
+
   	reports:{
   		collection: 'report',
   		via: 'owner'

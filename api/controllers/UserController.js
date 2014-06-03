@@ -6,9 +6,24 @@
  */
 
 module.exports = {
+	booNews: function(req,res){
+		var id = req.param('id')
+		User.findOne({
+			id: id
+		}).populate('boos')
+		.exec(function(err,user){
+			var urls=[]
+			user.boos.forEach(function(val,index){
+				urls.push("/news/show/"+val.parent_news)
+			})
+			res.send(urls)
+		})
+	},
+
 	getCurrentUser: function(req,res){
 		res.json(req.session.user)
 	},
+
 	show: function(req,res){
 		var id = req.param("id");
 		User.findOne({
