@@ -132,6 +132,14 @@ module.exports.routes = {
     action:'verifyBoo'
   },
 
+  //boo
+
+  'post /boo/getNewsId':{
+    controller:'boo',
+    action: 'getNewsId'
+  },
+
+
 
   // '/comments/api/user/:id':{
   //   controller: "comment",

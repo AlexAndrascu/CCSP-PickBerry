@@ -19,7 +19,8 @@ module.exports.bootstrap = function (cb) {
   },{
   	domain: 'www.appledaily.com.tw',
   	name: 'apple',
-  	email:'web@appledaily.com.tw'
+  	email:'web@appledaily.com.tw',
+  	phone: '0809-012-555'
   }).exec(function(err,company){
 	  Company.findOrCreate({
 	  	domain: 'www.chinatimes.com',
@@ -28,7 +29,9 @@ module.exports.bootstrap = function (cb) {
 	  },{
 	  	domain: 'www.chinatimes.com',
 	  	name: 'china',
-	  	email: 'editorplan@mail.chinatimes.com.tw'
+	  	email: 'editorplan@mail.chinatimes.com.tw',
+	  	phone: '02-23087111'
+
 	  }).exec(function(err,company){
 		  Company.findOrCreate({
 		  	domain: "ncc",
@@ -37,7 +40,8 @@ module.exports.bootstrap = function (cb) {
 		  },{
 		  	domain: "ncc",
 		  	name: 'ncc',
-		  	email: 'ncc48@ncc.gov.tw'
+		  	email: 'ncc48@ncc.gov.tw',
+		  	phone: '0800-201-205'
 		  }).exec(function(err,company){
 			  Company.findOrCreate({
 			  	domain: 'www.ettoday.net',
@@ -46,7 +50,8 @@ module.exports.bootstrap = function (cb) {
 			  },{
 			  	domain: 'www.ettoday.net',
 			  	name: 'et',
-			  	email: 'service@ettoday.net'
+			  	email: 'service@ettoday.net',
+			  	phone: '+886-2-5555-6366'
 			  }).exec(function(err,company){
 			  cb();
 				})
