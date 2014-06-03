@@ -36,7 +36,14 @@ module.exports.routes = {
     controller: "home",
     action: "index"
   },
-
+  'post /mailer/send':{
+    controller: "mailer",
+    action: 'send_mail'
+  },
+  'get /mailer/form':{
+    controller: "mailer",
+    action: 'mail_form'
+  },
   'post /news/addNews':{
     controller: 'news',
     action: 'addNews'

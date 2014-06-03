@@ -1,0 +1,6 @@
+<form id="mailForm" method="post" action="/mailer/send">
+	<input ng-model="mail.title" placeholder="title" id="title" name="title">
+	<input ng-model="mail.to" placeholder="to" id="to" name="to">
+    <textarea rows="4" cols="50" ng-model="mail.content" type="textarea" placeholder="I want to report this news" name="content" form="mailForm"></textarea>
+    <button type="submit">submit</button>
+</form>
