@@ -77,8 +77,6 @@
       console.log($scope.newses)
     })
 
-
-
     var current_user
     socket.get('/getCurrentUser',function(data){
       current_user = data
