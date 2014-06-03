@@ -77,7 +77,14 @@ module.exports.routes = {
     controller: "news",
     action: 'reportThisNews'
   },
-
+  '/news/showAll':{
+    controller: "news",
+    action: 'showAll'
+  },
+  '/news/showAll_angular':{
+    controller: 'news',
+    action: 'showAll_angular'
+  },
   '/news/reportForm/:id':{
     controller: "report",
     action: 'getReportForm'

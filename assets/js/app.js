@@ -132,7 +132,13 @@
         }
     }
   });
-
+  app.controller('news-all',function($scope,$location){
+    socket.get('/news/showAll_angular',function(data){
+      console.log(data)
+      $scope.newses = data.newses
+      $scope.$apply()
+    })
+  })
   app.controller("news", function($scope,$location) {
 
     var current_user

@@ -1,0 +1,12 @@
+<div ng-app="fucknews" class="container" ng-controller="news-all">
+  <div ng-repeat="news in newses">
+  <a href="/news/show/{{news.id}}">
+    <div>{{news.content}}</div>
+    <div>{{news.media}}</div>
+    <div>comments: {{news.comments.length}}</div>
+    <div>reports: {{news.reports.length}}</div>
+    <div>reasons: {{news.reasons.length}}</div>
+    <img src="{{news.imgurl}}">
+  </a>
+  </div>
+</div>
