@@ -3,9 +3,8 @@
     <input ng-model="news.uri" type="text" placeholder="I want to fuck this news" value="">
     <button ng-click="submitNews()">submit</button>
   </form>
-  <form>
-  <form action="/logout" method="post">
-    <input type="submit" value="Log Out"/>
+  <form id="logout" method="post" action="/logout">
+    <button type="submit">logout</button>
   </form>
   <ul>
     <li><a href="/user/show/<%=user.id %>"><%= user.name %></a></li>

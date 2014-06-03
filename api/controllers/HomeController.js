@@ -62,6 +62,7 @@ module.exports = {
 						req.session.authenticated = true
 						req.session.save()
 						console.log(req.session.authenticated)
+
 						res.view("home/index",{
 				            title: "News",
 				            user: user
@@ -73,10 +74,15 @@ module.exports = {
     },
     fblogout: function(req,res){
 		// req.logout();
-		req.session.destroy()
-		
-		console.log(req.session)
-		res.redirect('/');
+		 if (req.session.authenticated) {
+		    req.session.authenticated = false;
+			req.session.cookie.expires = 0;
+			req.session.access_token = null
+			req.session.expires = 0
+			req.session.user = null
+			req.session.save()
+			res.redirect('/');
+		  }
     },
 
 
@@ -118,11 +124,11 @@ module.exports = {
 	            req.session.expires         = result.expires || 0;
 
 
-		    	
+	            console.log(req.session)
 		    	res.redirect('/');
-		    	
 
-	            
+
+
 	        }
 	    )
     },
@@ -167,13 +173,13 @@ module.exports = {
 	            req.session.expires         = result.expires || 0;
 
 
-		    	
+
 		    	res.send({
 		    		login: "login",
 		    	});
-		    	
 
-	            
+
+
 	        }
 	    )
 	},
@@ -181,6 +187,7 @@ module.exports = {
 
     getSession: function(req, res){
     	console.log(FB.getLoginUrl({ scope: 'public_profile,user_photos,email'}));
+    	console.log(req.session)
     	res.send({
     		loginUrl: FB.getLoginUrl({ scope: 'public_profile,user_photos,email'}),
     		Session: req.session
