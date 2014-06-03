@@ -1,9 +1,9 @@
 <div ng-app="fucknews" class="container" ng-controller="news">
   <%= content %>
   <ul>
-    <li ng-repeat="reason in news.reasons">{{reason}}</li>
+    <li ng-repeat="reason in news.reasons">{{reason.content}}</li>
   </ul>
   <ul>
-    <li ng-repeat="report in news.reports">{{report}}</li>
+    <li ng-repeat="report in news.reports">{{report.content}}</li>
   </ul>
 </div>

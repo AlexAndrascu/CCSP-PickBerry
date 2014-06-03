@@ -61,7 +61,6 @@ module.exports = {
 						News.find({
 							title: title,
 							media: media,
-							parent_domain: company,
 							content: content
 						})
 						.exec(function(err, news){
@@ -76,7 +75,8 @@ module.exports = {
 									media: media,
 									parent_domain: company,
 									content: content,
-									imgurl: pic
+									imgurl: pic,
+									url: incomingurl
 								}).exec(function(err,news){
 									console.log(news)
 									console.log("not found")
@@ -110,15 +110,16 @@ module.exports = {
 				content: report.content,
 				rep_news: report.rep_news,
 				owner: report.owner
-			}).populate('owner').populate('rep_news').exec(function(e,report){
+			}).populate('owner')
+			.populate('rep_news').exec(function(e,report){
 				Company.findOne({
 					name: report.rep_news.media
 				}).exec(function(err,company){
 					var smtpTransport = nodemailer.createTransport("SMTP",{
 					    service: "Gmail",
 					    auth: {
-					        user: "how2945ard@gmail.com",
-					        pass: ""
+					        user: "blueberrycollector@gmail.com",
+					        pass: "ccsp2014"
 					    }
 					});
 					var mailOptions = {
@@ -184,11 +185,14 @@ module.exports = {
 		var id = req.param("id");
 		News.findOne({
 			id: id
-		}).exec(function (err, news) {
+		}).populate('reports')
+		.populate('reasons')
+		.populate('comments').exec(function (err, news) {
 			if (err) {
 				req.flash("info", "info: you point to wrong number");
 				return res.redirect("/");
 			}
+			console.log(news.comments[0].owner)
 			res.view("news/show", {
 				id: news.id,
 				content: news.content,
@@ -197,6 +201,7 @@ module.exports = {
 				hot: news.hot,
 				reasons: news.reasons,
 				comments: news.comments,
+				comments_user: news.comments.owner,
 				parent_domain: news.parent_domain,
 				news: news,
 				content: news.content,
