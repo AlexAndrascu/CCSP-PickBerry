@@ -4,7 +4,7 @@
   <ul><div>Comments:</div>
     <li ng-repeat="comment in news.comments">
       {{comment.content}}
-      <a href="/user/show/{{comment.owner}}">{{comment.owner.name}}</a>
+      <a href="/user/show/{{comment.owner.id}}">{{comment.owner.name}}</a>
     </li>
     <form>
       <input ng-model="comment.content" type="text" placeholder="I want to comment this news" value="">
@@ -14,7 +14,7 @@
   <ul>
     <li ng-repeat="reason in news.reasons">
       {{reason.content}}
-      <a href="/user/show/{{reason.owner}}">{{reason.owner.name}}</a>
+      <a href="/user/show/{{reason.owner.id}}">{{reason.owner.name}}</a>
     </li>
     <form>
       <input ng-model="reason.content" type="text" placeholder="I want to reason this news" value="">

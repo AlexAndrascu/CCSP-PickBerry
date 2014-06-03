@@ -74,7 +74,6 @@ module.exports = {
     fblogout: function(req,res){
 		// req.logout();
 		req.session.destroy()
-		
 		console.log(req.session)
 		res.redirect('/');
     },
@@ -118,11 +117,11 @@ module.exports = {
 	            req.session.expires         = result.expires || 0;
 
 
-		    	
-		    	res.redirect('/');
-		    	
 
-	            
+		    	res.redirect('/');
+
+
+
 	        }
 	    )
     },
@@ -167,13 +166,13 @@ module.exports = {
 	            req.session.expires         = result.expires || 0;
 
 
-		    	
+
 		    	res.send({
 		    		login: "login",
 		    	});
-		    	
 
-	            
+
+
 	        }
 	    )
 	},

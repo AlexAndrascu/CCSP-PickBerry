@@ -227,7 +227,7 @@
     $scope.submitReason = function() {
       socket.get('/reason/create?parent_news='+new_id+'&content='+$scope.reason.content+'&owner='+current_user,function(data){
         socket.get('/news/getAllReasoner/'+new_id,function(data){
-          data.reason.forEach(function(val,index){
+          data.reasons.forEach(function(val,index){
             $scope.news.reasons[index] = val
             $scope.$apply()
           })
