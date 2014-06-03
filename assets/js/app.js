@@ -148,16 +148,18 @@
 
     $scope.vote = function(id,$index){
       socket.get('/reason/'+id,function(data){
-        var voters = ''
+        var found = false
         data.voters.forEach(function(val,idx){
-          voters += val.id
-          if(data.voters.length!=0){
-            voters += ','
+          if(val.id === current_user){
+            data.voters.splice(idx,1)
+            found = true
           }
         })
-        console.log(voters)
-        console.log(voters+current_user)
-        socket.put('/reason/'+id,{voters: voters+current_user},function(data){
+        if(!found){
+          data.voters.push(current_user)
+        }
+        console.log(data.voters)
+        socket.put('/reason/'+id,{voters: data.voters},function(data){
           console.log(data)
           $scope.news.reasons[$index] = data
           $scope.$apply()
