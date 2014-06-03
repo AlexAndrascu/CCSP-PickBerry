@@ -77,8 +77,6 @@ module.exports = {
 									url: incomingurl,
 									hot: 1
 								}).exec(function(err,news){
-									
-									console.log("not found")
 									res.send({
 										news: news
 									});
@@ -104,8 +102,49 @@ module.exports = {
 
 	},
 
+	getAllCommenter: function(req,res){
+		var id = req.param('id')
+		Comment.find({
+			com_news: id
+		}).populate('owner').exec(function(err,comments){
+			res.send({
+				comments: comments
+			})
+		})
+	},
+
+	getAllReasoner: function(req,res){
+		var id = req.param('id')
+		Reason.find({
+			parent_news: id
+		}).populate('owner').populate('voters').exec(function(err,reasons){
+			console.log(reasons)
+			res.send({
+				reasons: reasons
+			})
+		})
+	},
+
+	showAll: function(req,res){
+		res.view("news/showAll",{
+			title: "All the news"
+		})
+	},
+
+	showAll_angular: function(req,res){
+		News.find()
+		.populate('reports')
+		.populate('reasons')
+		.populate('comments')
+		.exec(function(err,data){
+			console.log(data)
+			res.send({
+				newses: data
+			})
+		})
+	},
+
 	reportThisNews: function(req,res){
-		console.log(req.session.user)
 		Report.create({
 			content: req.param('content'),
 			rep_news: req.param('id'),
@@ -127,9 +166,10 @@ module.exports = {
 					        pass: "ccsp2014"
 					    }
 					});
+					console.log(report.owner.email+","+company.email)
 					var mailOptions = {
-					    from: report.owner.email, // sender address
-					    to: "how2945ard@gmail.com",//report.owner.email+","+company.email // list of receivers
+				    	// from: "<News Reporter>", // sender address   +report.owner.email
+					    to: "how2945ard@gmail.com",//report.owner.email+" , "+company.email // list of receivers
 					    subject: "Hello ✔", // Subject line
 					    text: report.content, // plaintext body
 					    // html:  // html body
@@ -141,21 +181,11 @@ module.exports = {
 					    	report.sent = true
 					        console.log("Message sent: " + response.message);
 					    }
-
+					    console.log(report.owner.email+","+company.email)
 					    // if you don't want to use this transport object anymore, uncomment following line
+					    res.redirect('/news/show/'+req.param('id'));
+					    console.log('/news/show/'+req.param('id'))
 					    smtpTransport.close(); // shut down the connection pool, no more messages
-					    res.view('reports/sent',{
-					    	id: report.rep_news.id,
-							content: report.rep_news.content,
-							imgurl: report.rep_news.imgurl,
-							url: report.rep_news.url,
-							reasons: report.rep_news.reasons,
-							comments: report.rep_news.comments,
-							parent_domain: report.rep_news.parent_domain,
-							news: report.rep_news,
-							content: report.rep_news.content,
-							title: "Report "+report.rep_news.title
-					    })
 					});
 				})
 			})
@@ -173,7 +203,7 @@ module.exports = {
 		// 		'eMail':'how2945ard@gmail.com',
 		// 		'Sex':'Male',
 		// 		'submit.x':'85',
-  // 			'submit.y':'7'
+  		//		'submit.y':'7'
 		// 	},
 		// 	header:{
 		// 		'Content-Type': 'application/x-www-form-urlencoded',
@@ -190,9 +220,11 @@ module.exports = {
 		var id = req.param("id");
 		News.findOne({
 			id: id
-		}).populate('reports')
+		})
+		.populate('reports')
 		.populate('reasons')
-		.populate('comments').exec(function (err, news) {
+		.populate('comments')
+		.exec(function (err, news) {
 			if (err) {
 				req.flash("info", "info: you point to wrong number");
 				return res.redirect("/");
@@ -218,38 +250,38 @@ module.exports = {
 		var url = req.body.url;
 		console.log('新聞URL: '+url);
 		News.findOne({url: url})
-			.populate('reports')
-			.populate('reasons')
-			.populate('comments')
-			.exec(function (err, news){
-				if (err) {
-					req.flash("info", "info: you point to wrong number");
-					return res.redirect("/");
-				}
-				if (news){
-					res.send( {
-						find: true,
-						id: news.id,
-						content: news.content,
-						imgurl: news.imgurl,
-						url: news.url,
-						hot: news.hot,
-						reasons: news.reasons,
-						comments: news.comments,
-						comments_user: news.comments.owner,
-						parent_domain: news.parent_domain,
-						news: news,
-						content: news.content,
-						title: news.title
-					});
-				}
-				else{
-					res.send({
-						find: false
-					})
-				}
-				
-			});
+		.populate('reports')
+		.populate('reasons')
+		.populate('comments')
+		.exec(function (err, news){
+			if (err) {
+				req.flash("info", "info: you point to wrong number");
+				return res.redirect("/");
+			}
+			if (news){
+				console.log(news);
+				res.send( {
+					find: true,
+					id: news.id,
+					content: news.content,
+					imgurl: news.imgurl,
+					url: news.url,
+					hot: news.hot,
+					reasons: news.reasons,
+					comments: news.comments,
+					comments_user: news.comments.owner,
+					parent_domain: news.parent_domain,
+					news: news,
+					content: news.content,
+					title: news.title
+				});
+			}
+			else{
+				res.send({
+					find: false
+				})
+			}
+		});
 
 	}
 };

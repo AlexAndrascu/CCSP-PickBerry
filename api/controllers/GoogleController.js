@@ -9,7 +9,7 @@ var passport = require('passport')
 
 module.exports = {
 	getUri: function(req, res){
-		
+
 		var request = require('request');
 		var cheerio = require('cheerio');
 		var db=[],news,newsid=1;
@@ -57,7 +57,7 @@ module.exports = {
 					News.findOne()
 					.where({url: incomingurl})
 					.exec(function(err, fnews){
-					
+
 						if(!fnews){
 							exist = 0;
 							res.send({
@@ -69,7 +69,7 @@ module.exports = {
 								newsUrl: incomingurl,
 								newshot: 0
 
-							
+
 							});
 						}
 						else{
@@ -83,10 +83,10 @@ module.exports = {
 								newsUrl: incomingurl,
 								newshot: fnews.hot
 
-								
+
 							});
 						}
-						
+
 					});
 				}
 			})
@@ -142,11 +142,11 @@ module.exports = {
 	            req.session.expires         = result.expires || 0;
 
 
-		    	
-		    	res.redirect('/');
-		    	
 
-	            
+		    	res.redirect('/');
+
+
+
 	        }
 	    )
     },

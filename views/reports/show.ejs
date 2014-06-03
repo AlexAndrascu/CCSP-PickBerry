@@ -1,10 +1,10 @@
 <div ng-app="fucknews" class="container" ng-controller="news">
   <%= content %>
   <ul>
-    <li ng-repeat="reason in news.reasons">{{reason}}</li>
-  </ul>
-  <ul>
-    <li ng-repeat="report in news.reports">{{report}}</li>
+    <li ng-repeat="reason in news.reasons">
+      {{reason.content}}
+      <a href="/user/show/{{reason.owner}}">{{reason.owner.name}}</a>
+    </li>
   </ul>
   <form id="reportForm" method="post" action="/news/report/<%=id%>">
     <textarea rows="4" cols="50" ng-model="report.content" type="textarea" placeholder="I want to report this news" name="content" form="reportForm"></textarea>
