@@ -61,8 +61,7 @@ module.exports = {
 							title: title,
 							media: media,
 							content: content
-						})
-						.exec(function(err, news){
+						}).exec(function(err, news){
 							if(err){
 								console.log(err)
 							}
@@ -77,22 +76,54 @@ module.exports = {
 									url: incomingurl,
 									hot: 1
 								}).exec(function(err,news){
-									res.send({
-										news: news
-									});
+									Boo.create({
+										owner: req.session.user,
+										parent_news: news.id
+									}).exec(function(err, boo){
+										console.log("boo created!");
+										res.send({
+											news: news,
+											booed: true
+										});
+									})
+
 								})
 							}
 							else{
-								console.log("found")
-								exist = 1;
-								news.hot += 1;
-								news.save(function(err){
 
-								});
 
-								res.send({
-									news: news
-								});
+								Boo.findOne({
+									owner: req.session.user,
+									parent_news: news.id
+								}).exec(function(err, findboo){
+									if(findboo){
+										console.log('already booed!');
+										res.send({
+											booed: true,
+											news: news
+										});
+									}
+									else{
+										exist = 1;
+										news.hot += 1;
+										news.save(function(err){
+											Boo.create({
+												owner: req.session.user,
+												parent_news: news.id
+											}).exec(function(err, boo){
+												res.send({
+													booed: false,
+													news: news
+												});
+											})
+										});
+									}
+								})
+
+
+
+
+
 							}
 						});
 					})

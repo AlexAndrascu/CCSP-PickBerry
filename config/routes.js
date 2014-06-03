@@ -127,6 +127,10 @@ module.exports.routes = {
     action: 'findByUrl'
   },
 
+  'post /google/boo':{
+    controller:'boo',
+    action:'verifyBoo'
+  },
 
 
   // '/comments/api/user/:id':{
