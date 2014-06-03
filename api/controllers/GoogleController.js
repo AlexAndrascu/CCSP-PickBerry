@@ -9,7 +9,7 @@ var passport = require('passport')
 
 module.exports = {
 	getUri: function(req, res){
-		console.log(req.body);
+
 		var request = require('request');
 		var cheerio = require('cheerio');
 		var db=[],news,newsid=1;
@@ -54,23 +54,39 @@ module.exports = {
 						default:
 							console.log("Scrap nothing!");
 					};
-					News.find()
-					.where({title: title})
-					.where({media: media})
-					.exec(function(err, users){
-						if(users.length == 0){
+					News.findOne()
+					.where({url: incomingurl})
+					.exec(function(err, fnews){
+
+						if(!fnews){
 							exist = 0;
+							res.send({
+								scrape: true,
+								newsTitle: title,
+								newsContent: content,
+								newsPic: pic,
+								newsExist: exist,
+								newsUrl: incomingurl,
+								newshot: 0
+
+
+							});
 						}
 						else{
 							exist = 1;
+							res.send({
+								scrape: true,
+								newsTitle: title,
+								newsContent: content,
+								newsPic: pic,
+								newsExist: exist,
+								newsUrl: incomingurl,
+								newshot: fnews.hot
+
+
+							});
 						}
-						res.send({
-							newsTitle: title,
-							newsContent: content,
-							newsPic: pic,
-							newsExist: exist,
-							newsUrl: incomingurl,
-						});
+
 					});
 				}
 			})
@@ -126,11 +142,11 @@ module.exports = {
 	            req.session.expires         = result.expires || 0;
 
 
-		    	
-		    	res.redirect('/');
-		    	
 
-	            
+		    	res.redirect('/');
+
+
+
 	        }
 	    )
     },
