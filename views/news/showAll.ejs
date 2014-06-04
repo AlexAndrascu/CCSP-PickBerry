@@ -1,12 +1,35 @@
-<div ng-app="fucknews" class="container" ng-controller="news-all">
-  <div ng-repeat="news in newses">
-  <a href="/news/show/{{news.id}}">
-    <div>{{news.content}}</div>
-    <div>{{news.media}}</div>
-    <div>comments: {{news.comments.length}}</div>
-    <div>reports: {{news.reports.length}}</div>
-    <div>reasons: {{news.reasons.length}}</div>
-    <img src="{{news.imgurl}}">
-  </a>
+<style>
+.newpage{
+	height:900px;
+	background:rgba(60,30,30,0.4);
+}
+.out-container .newlist{
+	
+	width:100%;
+	height:100%;
+	background:rgba(60,60,30,0.4);
+
+}
+.out-container{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	min-height:100%;
+}
+</style>
+
+<div class="out-container" ng-app="fucknews" ng-controller="news-all">
+  <div class="newlist" ng-repeat="news in newses">
+  <div class="newpage">
+	  <a href="/news/show/{{news.id}}">
+	    <div>{{news.content}}</div>
+	    <div>{{news.media}}</div>
+	    <div>comments: {{news.comments.length}}</div>
+	    <div>reports: {{news.reports.length}}</div>
+	    <div>reasons: {{news.reasons.length}}</div>
+	    <img src="{{news.imgurl}}">
+	  </a>
+  </div>
   </div>
 </div>

@@ -1,26 +1,113 @@
-<div ng-app="fucknews" class="container" ng-controller="news">
-  <%= content %><br><br>
-  <div><a href="/news/reportForm/<%=news.id%>">report it! ( {{ news.reports.length }} reports )</a></div>
-  <ul><div>Comments:</div>
-    <li ng-repeat="comment in news.comments">
+<style>
+
+	.body{
+		margin:0px;
+	}
+	.newstitle{
+
+		width:100%;
+	}
+
+	.out-contain{
+		position:absolute;
+		width:100%;
+		top:0;
+		left:0;
+		background:rgba(255,255,110,0.5);
+	}
+
+	.newstitle{
+		width:100%;
+		position:absolute;
+		left:0px;
+		top:0px;
+		height:30px;
+		background:rgba(255,150,130,0.5);
+	}
+	.newsdetail{
+		width:100%;
+		height:100%;
+		position:absolute;
+		left:0px;
+		top:30px;
+		background:rgba(123,123,123,0.5);
+	}
+	.newsconrea .newscontent{
+		width:50%;
+		height:100%;
+		float:left;
+		background:rgba(20,100,20,0.2);
+
+	}
+	.newscomment{
+		width:100%;
+		height:700px;
+
+		float:left;
+		background:rgba(20,20,20,0.2);
+	}
+	.newsconrea .newsreason{
+		width:50%;
+		height:100%;
+		
+		float:left;
+		background:rgba(20,20,20,0.2);
+	}
+	.newsconrea{
+		width:100%;
+		height:1000px;
+		background:rgba(40,30,100,0.5);
+	}
+	.newsreport{
+		width:100%;
+		height:40px;
+		line-height:40px;
+		vertical-align:middle;
+		text-align:center;
+		background:rgba(100,250,40,0.3);
+
+	}
+</style>
+<div class="out-contain">
+
+<div class="newstitle"><%= title %></div>
+
+<div class="newsdetail" ng-app="fucknews" ng-controller="news">
+	<div class="newsconrea">
+		<div class="newscontent"> <%= content %></div>
+		<div class="newsreason">
+			<div ng-repeat="reason in news.reasons">
+			  <div>
+			  		<span>{{reason.content}}</span>
+				  <span><a href="/user/show/{{reason.owner.id}}">{{reason.owner.name}}</a></span>
+				  <span><button ng-click="vote(reason.id,$index)">vote for this {{reason.voters.length}}</button></span>
+			  </div>
+			</div>
+			<div>
+			    <form>
+			      <input ng-model="reason.content" type="text" placeholder="I want to reason this news" value="">
+			      <button ng-click="submitReason()">submit</button>
+			  	</form>
+			</div>
+		</div>
+	</div>
+ 
+  <div class="newsreport"><a href="/news/reportForm/<%=news.id%>">report it! ( {{ news.reports.length }} reports )</a></div>
+  
+  
+  <div class="newscomment">
+  	<div>Comments:</div>
+    <div ng-repeat="comment in news.comments">
       {{comment.content}}
       <a href="/user/show/{{comment.owner.id}}">{{comment.owner.name}}</a>
-    </li>
-    <form>
-      <input ng-model="comment.content" type="text" placeholder="I want to comment this news" value="">
-      <button ng-click="submitComment()">submit</button>
-    </form>
-  </ul>
-  <ul>
-    <li ng-repeat="reason in news.reasons">
-      {{reason.content}}
-      <div>owner:</div>
-      <a href="/user/show/{{reason.owner.id}}">{{reason.owner.name}}</a>
-      <button ng-click="vote(reason.id,$index)">vote for this {{reason.voters.length}}</button>
-    </li>
-    <form>
-      <input ng-model="reason.content" type="text" placeholder="I want to reason this news" value="">
-      <button ng-click="submitReason()">submit</button>
-  </form>
-  </ul>
+    </div>
+    <div>
+	    <form>
+	      <input ng-model="comment.content" type="text" placeholder="I want to comment this news" value="">
+	      <button ng-click="submitComment()">submit</button>
+	    </form>
+    </div>
+  </div>
+
+</div>
 </div>

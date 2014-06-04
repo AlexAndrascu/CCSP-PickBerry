@@ -1,21 +1,81 @@
-<div ng-app="fucknews" class="container" ng-controller="homepage">
-  <form>
-    <input ng-model="news.uri" type="text" placeholder="I want to fuck this news" value="">
-    <button ng-click="submitNews()">submit</button>
-  </form>
-  <form id="logout" method="post" action="/logout">
-    <button type="submit">logout</button>
-  </form>
-  <ul>
-    <li><a href="/user/show/<%=user.id %>"><%= user.name %></a></li>
-  </ul>
-  <ul>
-  <li ng-repeat="phone in phones | filter:query | limitTo:quantity | orderBy:orderProp">
-    <li ng-repeat="news in newses | limitTo:5 | orderBy: 'hot' ">
+<style>
+  .body{
+    margin:0px;
+  }
+  .navbar{
+    position:absolute;
+    left:0;
+    top:0;
+    height:50px;
+    background: rgba(0,0,0,0.5);
+    width:100%;
+
+  }
+  .navbar .logout{
+    float:left;
+    height:20px;
+
+  }
+  .navbar .user{
+    float:left;
+    height:20px;
+  }
+  .hotnews{
+    position:absolute;
+    left:0px;
+    top:50px;
+    background:rgba(100,100,200,0.5);
+    height:100%;
+    width:100%;
+
+  }
+  .fuckNews{
+    position:absolute;
+    left:0px;
+    top:100%;
+    height:50px;
+    width:100%;
+    background: rgba(100,200,100,0.5);
+
+  }
+
+</style>
+
+<div ng-app="fucknews" ng-controller="homepage">
+  <div class="navbar">
+      <div class="user">
+         <a href="/user/show/<%=user.id %>"><%= user.name %></a>
+      </div>
+     <div class="logout">
+        <form id="logout" method="post" action="/logout">
+          <button type="submit">logout</button>
+        </form>
+      </div>
+
+  </div>
+
+
+
+
+  <div class="hotnews">
+
+    <div ng-repeat="news in newses | limitTo:5 | orderBy: 'hot' ">
       <a href="/news/show/{{ news.id }}">
         {{ news.title }}
+        
       </a>
-    </li>
-  </ul>
-  <a href="/news/showAll">Show ALL</a>
+    </div>
+    <div> 
+      <a href="/news/showAll">Show ALL</a>
+    </div>
+  </div>
+  
+
+  <div class="fuckNews">
+    <form>
+      <input ng-model="news.uri" type="text" placeholder="I want to fuck this news" value="">
+      <button ng-click="submitNews()">submit</button>
+    </form>
+  </div>
+
 </div>

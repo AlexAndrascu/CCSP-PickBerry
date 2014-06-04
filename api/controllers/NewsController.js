@@ -14,6 +14,7 @@ module.exports = {
 		var cheerio = require('cheerio');
 		var db=[],news,newsid=1;
 		//var incomingurl = '', 測試用
+		console.log(req.body.uri)
 		var incomingurl = req.body.uri,
 			title,content,pic,exist, media = "nothing";
 		switch(req.body.uri.split('/')[2]) {
@@ -90,8 +91,6 @@ module.exports = {
 								})
 							}
 							else{
-
-
 								Boo.findOne({
 									owner: req.session.user,
 									parent_news: news.id
@@ -100,7 +99,8 @@ module.exports = {
 										console.log('already booed!');
 										res.send({
 											booed: true,
-											news: news
+											news: news,
+											news_title: news.title
 										});
 									}
 									else{
@@ -113,7 +113,8 @@ module.exports = {
 											}).exec(function(err, boo){
 												res.send({
 													booed: false,
-													news: news
+													news: news,
+													news_title: news.title
 												});
 											})
 										});
