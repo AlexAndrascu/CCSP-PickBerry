@@ -7,45 +7,58 @@
 var nodemailer = require("nodemailer");
 var email;
 var news;
+var request = require('request');
+
 
 module.exports = {
 	mail_form: function(req,res){
+
 		console.log(req.param('url'));
 		console.log(req.param('media'));
+
 		Company.findOne({name: req.param('media')})
-		.exec(function(err, data){
-			if(data)
-			{
-				email = data.email;
-				console.log(email);
-			}
-			else{
-				email = "";
-			}
-			News.findOrCreate({url: req.param('url')},{url: req.param('url')}).exec(function(err, data){
-				if(data){
-					news = data.title;
-					console.log(news);
-					res.view("mailer/mailForm",{
-						id: data.id,
-						media: req.param('media'),
-						url: req.param('url'),
-						news: news,
-						email: email
-					})
+			.exec(function(err, data){
+				if(data)
+				{
+					email = data.email;
+					console.log(email);
 				}
 				else{
-					news = "";
-					res.view("mailer/mailForm",{
-						media: req.param('media'),
-						url: req.param('url'),
-						news: news,
-						email: email
-					})
+					email = "";
 				}
+				News.findOne({url: req.param('url')}).exec(function(err, data){
+					if(data){
+						console.log('found')
+						news = data.title;
+						console.log(news);
+						res.view("mailer/mailForm",{
+							id: data.id,
+							media: req.param('media'),
+							url: req.param('url'),
+							news: news,
+							email: email
+						})
+					}
+					else{
+						var uri = req.param('url')
+						request.post('http://localhost:1337/news/addNews',{
+							form:{
+								uri: uri
+							}
+						},function(err,response,html){
+							console.log(response.body)
+							res.view("mailer/mailForm",{
+								id: response.body.news.id,
+								media: req.param('media'),
+								url: req.param('url'),
+								news: response.body.news.title,
+								email: email
+							})
+						})
+					}
 
+				})
 			})
-		})
 	},
 	send_mail: function(req,res){
 		var smtpTransport = nodemailer.createTransport("SMTP",{
