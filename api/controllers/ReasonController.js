@@ -26,7 +26,7 @@ module.exports = {
 					// request(
 					//     { method: 'PUT'
 					//     , uri: 'http://localhost:1337/reason/'+reasonid
-					//     , body: {voters: data.voters, vote: data.voters.length} 
+					//     , body: {voters: data.voters, vote: data.voters.length}
 					//     }
 					//   , function (error, response, body) {
 					// 	    console.log('saved')
@@ -79,21 +79,21 @@ module.exports = {
 						}
 					})
 					//看FOUND是否找到東西
-					if(!found){	
+					if(!found){
 												// find nothing
 						data.voters.push(userid); //推入USERID
 						data.vote=data.voters.length;
 						console.log("找不到");
 
 					}
-					
 
-					
+
+
 				}
-				
 
 
-				
+
+
  			}
 
  			//find no reasons
@@ -103,7 +103,7 @@ module.exports = {
  					votedNum: 0
  				})
  			}
- 			
+
  		})
 
 
@@ -112,15 +112,13 @@ module.exports = {
  	},
 
  	getVoter: function(req,res){
- 		
+
  		Reason.findOne({id: req.param('id')})
- 		.populate('voters')
  		.exec(function(err, data){
  			if(data){
- 				console.log(data.voters);
  				res.send({voters: data.voters});
  			}
  		})
  	}
-	
+
 };
