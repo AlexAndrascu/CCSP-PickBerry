@@ -257,20 +257,25 @@ module.exports = {
 				req.flash("info", "info: you point to wrong number");
 				return res.redirect("/");
 			}
-			res.view("news/show", {
-				id: news.id,
-				content: news.content,
-				imgurl: news.imgurl,
-				url: news.url,
-				hot: news.hot,
-				reasons: news.reasons,
-				comments: news.comments,
-				comments_user: news.comments.owner,
-				parent_domain: news.parent_domain,
-				news: news,
-				content: news.content,
-				title: news.title
-			});
+			else if(news){
+				res.view("news/show", {
+					id: news.id,
+					content: news.content,
+					imgurl: news.imgurl,
+					url: news.url,
+					hot: news.hot,
+					reasons: news.reasons,
+					comments: news.comments,
+					comments_user: news.comments.owner,
+					parent_domain: news.parent_domain,
+					news: news,
+					content: news.content,
+					title: news.title
+				});
+			}
+			else{
+				return res.redirect("/");
+			}
 		});
 	},
 
