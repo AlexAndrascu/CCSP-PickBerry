@@ -9,7 +9,11 @@ module.exports = {
   // schema : true,
   attributes: {
   	content:'string',
-  	vote: 'integer',
+  	vote: {
+        type:'integer',
+        defaultsTo: 0
+
+    },
 
   	owner:{
   		model:'user'
@@ -18,6 +22,7 @@ module.exports = {
   	parent_news:{             //原始的新聞
   		model:'news'
   	},
+
 
   	voters:{                  //投票者
   		collection: 'user',

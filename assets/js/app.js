@@ -152,6 +152,7 @@
         data.voters.forEach(function(val,idx){
           if(val.id === current_user){
             data.voters.splice(idx,1)
+
             found = true
           }
         })
@@ -159,7 +160,9 @@
           data.voters.push(current_user)
         }
         console.log(data.voters)
-        socket.put('/reason/'+id,{voters: data.voters},function(data){
+        var voteNum =data.voters.length;
+        console.log("VOTE!!!!!!!!!!!"+data.vote)
+        socket.put('/reason/'+id,{voters: data.voters, vote: voteNum},function(data){
           console.log(data)
           $scope.news.reasons[$index] = data
           $scope.$apply()

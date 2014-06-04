@@ -68,14 +68,40 @@ module.exports.routes = {
     controller: "user",
     action: 'show'
   },
+
   '/comments/show/user/:id':{
     controller: "user",
     action: 'getAllComments'
   },
+
+
+
+  /////////VOTE的東東////////////
+
+
+
   '/reasons/show/user/:id':{
     controller: "user",
     action: 'getAllReasons'
   },
+
+  '/reasons/vote/:rid/:uid':{
+    controller: "reason",
+    action: "vote"
+  },
+  '/voter/:id':{
+    controller:"reason",
+    action:"getVoter"
+  },
+//538eefa3fca6bdab071b1250
+
+
+
+
+
+
+//////檢舉的東東///////
+
   '/reports/show/user/:id':{
     controller: "user",
     action: 'getAllReports'
