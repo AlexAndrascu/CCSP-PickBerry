@@ -91,6 +91,7 @@ module.exports = {
 								})
 							}
 							else{
+								console.log("USER:"+ req.session.user);
 								Boo.findOne({
 									owner: req.session.user,
 									parent_news: news.id
